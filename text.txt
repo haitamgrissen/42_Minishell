@@ -12,3 +12,9 @@ echo
  e"c"ho
 
  echo
+
+
+ echo " hi "
+ ec""h""o
+ echo
+ " hi "

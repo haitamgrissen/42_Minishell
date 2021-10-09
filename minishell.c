@@ -6,29 +6,53 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/09 16:03:16 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/09 18:28:30 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *treat_quotes(char *str)
+void check_modulo(char *str)
 {
-    int flag;
     int i;
-    char *new;
-    new = ft_strdup(str);
+    int flag;
     i = 0;
     flag = 0;
-    //new = ft_strjoin(ft_substr(),
     while(str[i] != '\0')
     {
-        if (str[i] == '\'' || str[i] == '\"')
-            flag++;   
+        if (str[i] == '\"' || str[i] == '\'')
+            {
+                flag++;
+                i++;
+            }
+        else
+            i++;
     }
-    if (flag % 2 != 0)
+    if (flag % 2 == 1)
         exit(0);
-    return (str);
+}
+
+char *treat_quotes(char *str)
+{
+    int i;
+    int j;
+    char *tmp;
+    i = 0;
+    j = 0;
+    tmp = (char *)malloc(sizeof(char));
+    check_modulo(str);
+    while(str[i] != '\0')
+    {
+        if (str[i] == '\"' || str[i] =='\'')
+            i++;
+        else
+        {
+            tmp[j] = str[i];
+            j++;    
+        }
+    i++;
+    }
+    return (tmp);
 }
 int	ft_strcmp(char *s1, char *s2)
 {
@@ -50,7 +74,7 @@ void execute(char *all, char *arg)
     i = 0;
     if (ft_strcmp(arg,"echo") == 0)
         echo_execute();
-    else if (ft_strcmp(arg, "exit" )== 0)
+    else if (ft_strcmp(arg, "exit" ) == 0)
         exit(0);
 }
 void parse(char *str)
@@ -66,7 +90,7 @@ void parse(char *str)
         i++;
     }
     shell->first[i] = '\0';
-    //shell->first = treat_quotes(shell->first);
+    shell->first = treat_quotes(shell->first);
     i = 0;
     while(shell->first[i] != '\0')
     {
