@@ -3,3 +3,12 @@ export
 unset
 echo
  
+ ls -al > test > zbi
+
+
+
+
+
+ e"c"ho
+
+ echo

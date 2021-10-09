@@ -26,5 +26,5 @@ char		*ft_strjoin(char *s1, char *s2);
 char		*ft_strdup(char *s1);
 char		*kayn_ster(char *str);
 int			ft_strlen(char *s);
-
+char		**ft_split(char *s, char c);
 #endif 
