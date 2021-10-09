@@ -6,12 +6,33 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/09 13:10:30 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/09 13:16:08 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	ft_strcmp(char *s1, char *s2)
+{
+	int i;
+
+	i = 0;
+	while (s1[i] == s2[i] && s1[i] != '\0' && s2[i] != '\0')
+		i++;
+	return (s1[i] - s2[i]);
+}
+
+void echo_execute()
+{
+    write(1, "ECHO SUCCESS",13);
+}
+void execute(char *all, char *arg)
+{
+    int i;
+    i = 0;
+    if (ft_strcmp(arg,"echo")== 0)
+        echo_execute();
+}
 void parse(char *str)
 {
     t_shell *shell;
@@ -32,6 +53,7 @@ void parse(char *str)
         write(1,"\n",1);
         i++;
     }
+    execute(shell->str, shell->first);
 }
 
 
