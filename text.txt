@@ -1,0 +1,5 @@
+strcmp;env 
+export
+unset
+echo
+ 
