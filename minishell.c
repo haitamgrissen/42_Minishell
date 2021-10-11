@@ -6,14 +6,12 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/11 13:29:25 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/11 16:25:35 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-#include <readline/readline.h>
-#include <readline/history.h>
 char *ft_putstr(char *str)
 {
     int i;
@@ -53,11 +51,11 @@ char *treat_quotes(char *str)
     char *tmp;
     i = 0;
     j = 0;
-    tmp = (char *)malloc(sizeof(char));
+    tmp = (char *)malloc(sizeof(str));
     check_modulo(str);
     while(str[i] != '\0')
     {
-        if (str[i] == '\"' || str[i] =='\'')
+        if (str[i] == '\"' || str[i] =='\'' )
             i++;
         else
         {
@@ -97,15 +95,23 @@ void execute(char *all, char *arg)
 void parse(char *str)
 {
     t_shell *shell;
-    
-    shell->first = (char *)malloc(ft_strlen(str) + 1);
+    shell = malloc(sizeof(t_shell));
     int i;
-    i = 0;
-    while(str[i]!= '\0' && str[i] != ' ')
+    i = 0; 
+
+ 
+    shell->first = (char *)malloc(ft_strlen(str) + 1);
+       if (hh == 2)
+    {
+        printf("%s\n",str);
+        exit(0);
+    }
+    while(str[i] != '\0' && str[i] != ' ')
     {
         shell->first[i] = str[i];
         i++;
     }
+
     shell->first[i] = '\0';
     shell->first = treat_quotes(shell->first);
     i = 0;
@@ -117,24 +123,20 @@ void parse(char *str)
     execute(shell->str, shell->first);
 }
 
-
-
 int main(int ac, char **av)
 {
     t_shell *sh;
+    hh = 0;
     sh = malloc(sizeof(t_shell));
-    sh->str = ft_strdup("");
-    printf("%s",sh->str);
+    sh->str = (char*)malloc(sizeof(char) + 4);
+    //sh->str = ft_strdup("");
+    //printf("%s",sh->str);
     while(1)
     {
-        write(1, "Minishell $>",12);
-        readline(sh->str);
+        sh->str = readline("Minishell $>: ");
+        //ft_putstr(sh->str);
         parse(sh->str);
     }
-    // while(readline(sh->str))
-    // {
-    //     ft_putstr("Minishell  $>");
-    //     parse(sh->str);
-    // }
+ 
     return(0);
 }

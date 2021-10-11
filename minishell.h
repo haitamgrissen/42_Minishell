@@ -20,7 +20,7 @@ typedef struct shell
     char *first; // first command that has been entered " ls -al"  "first = ls" in this case
     char *second;
 }t_shell;
-
+int hh;
 int         get_next_line(int fd, char **line);
 char        *ft_substr(char *s, unsigned int start, size_t len);
 int         outtil(int fd, char **rest, char **line);
@@ -29,4 +29,5 @@ char		*ft_strdup(char *s1);
 char		*kayn_ster(char *str);
 int			ft_strlen(char *s);
 char		**ft_split(char *s, char c);
+void        parse(char *str);
 #endif 
