@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/11 16:53:34 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/11 17:03:20 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,10 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	return (s1[i] - s2[i]);
 }
+void pwd_execute()
+{
+    system("pwd");
+}
 void clear_execute()
 {
     system("clear");
@@ -83,7 +87,7 @@ void ls_execute()
 {
     int i;
     i= system("ls");
-    printf("value returned :\n %d",i);
+    printf("value returned :%d \n",i);
 }
 void echo_execute()
 {
@@ -101,6 +105,8 @@ void execute(char *all, char *arg)
         exit(0);
     else if (ft_strcmp(arg, "clear")==0)
         clear_execute();
+    else if (ft_strcmp(arg, "pwd") == 0)
+        pwd_execute();
     else
             ft_putstr("Command not Found$\n");
         
