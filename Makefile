@@ -6,7 +6,7 @@
 #    By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/11 16:58:33 by sel-fcht          #+#    #+#              #
-#    Updated: 2021/10/11 17:02:12 by sel-fcht         ###   ########.fr        #
+#    Updated: 2021/10/11 17:06:53 by sel-fcht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ LDFLAGS=-L/Users/sel-fcht/.brew/opt/readline/lib
 CPPFLAGS=-I/Users/sel-fcht/.brew/opt/readline/include
 all: $(NAME)
 
-$(NAME) :$(SRC)
-	gcc -lreadline $(LDFLAGS) $(CPPFLAGS)  $(SRC)
+$(NAME): $(SRC)
+	gcc -lreadline $(LDFLAGS) $(CPPFLAGS) $(SRC)
 
 clean:
 	rm -rf *.o

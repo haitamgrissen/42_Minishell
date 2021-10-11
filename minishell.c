@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/11 17:03:20 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/11 17:08:27 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,6 @@ void parse(char *str)
     shell = malloc(sizeof(t_shell));
     int i;
     i = 0; 
-
- 
     shell->first = (char *)malloc(ft_strlen(str) + 1);
     while(str[i] != '\0' && str[i] != ' ')
     {
@@ -148,6 +146,11 @@ int main(int ac, char **av)
     while(1)
     {
         sh->str = readline("Minishell $>: ");
+        if (sh->str == NULL)
+        {
+            ft_putstr("exit");
+            exit(0);
+        }
         //ft_putstr(sh->str);
         parse(sh->str);
     }
