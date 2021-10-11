@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/11 16:25:35 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/11 16:53:34 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,19 @@ int	ft_strcmp(char *s1, char *s2)
 		i++;
 	return (s1[i] - s2[i]);
 }
-
+void clear_execute()
+{
+    system("clear");
+}
+void ls_execute()
+{
+    int i;
+    i= system("ls");
+    printf("value returned :\n %d",i);
+}
 void echo_execute()
 {
-    write(1, "ECHO SUCCESS",13);
+   system("echo");
 }
 void execute(char *all, char *arg)
 {
@@ -86,8 +95,12 @@ void execute(char *all, char *arg)
     i = 0;
     if (ft_strcmp(arg,"echo") == 0)
         echo_execute();
+    else if (ft_strcmp(arg,"ls")==0)
+        ls_execute();
     else if (ft_strcmp(arg, "exit" ) == 0)
         exit(0);
+    else if (ft_strcmp(arg, "clear")==0)
+        clear_execute();
     else
             ft_putstr("Command not Found$\n");
         
@@ -101,11 +114,6 @@ void parse(char *str)
 
  
     shell->first = (char *)malloc(ft_strlen(str) + 1);
-       if (hh == 2)
-    {
-        printf("%s\n",str);
-        exit(0);
-    }
     while(str[i] != '\0' && str[i] != ' ')
     {
         shell->first[i] = str[i];
@@ -115,11 +123,11 @@ void parse(char *str)
     shell->first[i] = '\0';
     shell->first = treat_quotes(shell->first);
     i = 0;
-    while(shell->first[i] != '\0')
-    {
-        write(1,&shell->first[i],1);
-        i++;
-    }
+    // while(shell->first[i] != '\0')
+    // {
+    //     write(1,&shell->first[i],1);
+    //     i++;
+    // }
     execute(shell->str, shell->first);
 }
 
