@@ -12,11 +12,13 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 typedef struct shell
 {
     char *str;
     char *first; // first command that has been entered " ls -al"  "first = ls" in this case
-
+    char *second;
 }t_shell;
 
 int         get_next_line(int fd, char **line);

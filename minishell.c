@@ -6,11 +6,25 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/09 18:28:30 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/11 13:29:25 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#include <readline/readline.h>
+#include <readline/history.h>
+char *ft_putstr(char *str)
+{
+    int i;
+    i = 0;
+    while (str[i])
+    {
+        write(1,&str[i],1);
+        i++;
+    }
+    return (str);
+}
 
 void check_modulo(char *str)
 {
@@ -76,6 +90,9 @@ void execute(char *all, char *arg)
         echo_execute();
     else if (ft_strcmp(arg, "exit" ) == 0)
         exit(0);
+    else
+            ft_putstr("Command not Found$\n");
+        
 }
 void parse(char *str)
 {
@@ -101,17 +118,7 @@ void parse(char *str)
 }
 
 
-char *ft_putstr(char *str)
-{
-    int i;
-    i = 0;
-    while (str[i])
-    {
-        write(1,&str[i],1);
-        i++;
-    }
-    return (str);
-}
+
 int main(int ac, char **av)
 {
     t_shell *sh;
@@ -121,8 +128,13 @@ int main(int ac, char **av)
     while(1)
     {
         write(1, "Minishell $>",12);
-        get_next_line(0, &sh->str);
+        readline(sh->str);
         parse(sh->str);
     }
+    // while(readline(sh->str))
+    // {
+    //     ft_putstr("Minishell  $>");
+    //     parse(sh->str);
+    // }
     return(0);
 }
