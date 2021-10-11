@@ -8,5 +8,5 @@ norme:
 	norminette *.c *.h
 push:
 	git add .
-	git commit -m "Readline kinda"
+	git commit -m "ls echo clear exit system commands"
 	git push
