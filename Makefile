@@ -8,5 +8,5 @@ norme:
 	norminette *.c *.h
 push:
 	git add .
-	git commit -m "MINI"
+	git commit -m "Readline kinda"
 	git push
