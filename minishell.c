@@ -6,11 +6,13 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/11 17:08:27 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/14 19:08:18 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
 
 char *ft_putstr(char *str)
 {
@@ -24,6 +26,59 @@ char *ft_putstr(char *str)
     return (str);
 }
 
+char * parse_second_arg(char *str)
+{
+    int i;
+    int j = 0;
+    char *tmp;
+    tmp = (char *)malloc(sizeof(str));
+    i = 0;
+    while(str[i]!= '\0')
+    {
+    if (str[i] == ' ')
+            i++;
+    if (str[i] == '-' )
+        {
+            while(str[i]    != '\0')
+            {
+                tmp[j] = str[i];
+                i++;
+            j   ++;
+            }
+        }
+        else
+            i++;
+    }
+   return(tmp);
+}
+char *take_second(char *str)
+{
+    int i;
+    char *tmp;
+    tmp = (char *)malloc(sizeof(str));
+    int j = 0;
+    i = 0;
+    while(str[i] != '\0' && str[i] != ' ')
+        i++;
+    while(str[i]!= '\0')
+    {
+        tmp[j] = str[i];
+        i++;
+        j++;
+    }
+    return (tmp);
+}
+int  subtstr(char *str)
+{
+    int i; 
+    i = 0;
+    while(str[i]!= '\0')
+    {
+        i++;
+    }
+    printf("Lenght of the str is %d\n",i);
+    return (i);
+}
 void check_modulo(char *str)
 {
     int i;
@@ -115,6 +170,7 @@ void parse(char *str)
 {
     t_shell *shell;
     shell = malloc(sizeof(t_shell));
+    
     int i;
     i = 0; 
     shell->first = (char *)malloc(ft_strlen(str) + 1);
@@ -123,15 +179,12 @@ void parse(char *str)
         shell->first[i] = str[i];
         i++;
     }
-
     shell->first[i] = '\0';
+    //shell->val = subtstr(str);
+    shell->second = take_second(str);
+    shell->second = parse_second_arg(shell->second);
+    printf("Second Argument is : %s\n",shell->second);
     shell->first = treat_quotes(shell->first);
-    i = 0;
-    // while(shell->first[i] != '\0')
-    // {
-    //     write(1,&shell->first[i],1);
-    //     i++;
-    // }
     execute(shell->str, shell->first);
 }
 

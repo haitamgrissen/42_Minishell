@@ -18,7 +18,8 @@ typedef struct shell
 {
     char *str;
     char *first; // first command that has been entered " ls -al"  "first = ls" in this case
-    char *second;
+    char *second; // second arg
+    int val;
 }t_shell;
 int hh;
 int         get_next_line(int fd, char **line);
