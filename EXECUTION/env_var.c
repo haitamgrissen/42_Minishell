@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/11 15:49:36 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/17 13:32:54 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,16 @@ void	print_export(t_envs *envs)
 	current = envs;
 	while(current->next != NULL)
 	{
-		printf("declare -x %s=\"%s\"\n", current->bef_eq, current->aft_eq);
+		if (current->val == NULL)
+			printf("declare -x %s\n", current->key);
+		else
+			printf("declare -x %s=\"%s\"\n", current->key, current->val);
 		current = current->next;
 	}
+	if (current->val == NULL)
+			printf("declare -x %s\n", current->key);
+	else
+			printf("declare -x %s=\"%s\"\n", current->key, current->val);
 }
 
 void	check_env_var(t_envs *envs, char	*str)
@@ -31,7 +38,7 @@ void	check_env_var(t_envs *envs, char	*str)
 	current = envs;
 	while(current->next != NULL)
 	{
-		if (ft_strcmp(envs->bef_eq, str) == 0)
+		if (ft_strcmp(envs->key, str) == 0)
 			
 		current = current->next;
 	}
@@ -44,61 +51,60 @@ void	print_env(t_envs	*envs)
 	current = envs;
 	while(current->next != NULL)
 	{
-		printf("%s=%s\n", current->bef_eq, current->aft_eq);
+		if (current->val != NULL)
+			printf("%s=%s\n", current->key, current->val);
 		current = current->next;
 	}
+	if (current->val != NULL)
+			printf("%s=%s\n", current->key, current->val);
 }
 
-void	split_env(char **f, char **bf, char **af)
+void	split_env(char *f, char **key, char **val)
 {
 	int		i;
 	int		j;
 
 	i = 0;
-	if (!(*f))
+	if (!f)
 		return ;
-	while ((*f)[i] != '=')
+	while (f[i] != '=' && f[i])
 		i++;
-	(*bf) = ft_substr((*f), 0, i);
+
+	(*key) = ft_substr(f, 0, i);
 	j = 0;
-	while ((*f)[i + j])
+	while (f[i + j])
 		j++;
-	(*af) = ft_substr((*f), i + 1, j);
+	if (f[i] != '=')
+		(*val) = NULL;
+	else
+		(*val) = ft_substr(f, i + 1, j);
 }
 
 void	add_node(t_envs *head, char	*str)
 {
 	t_envs	*current;
 	t_envs	*new;
-	t_envs	*tmp;
 
 	current = head;
 	while (current->next != NULL)
-	{
 		current = current->next;
-		// if (current->next == NULL)
-		// {
-			
-		// }
-	}
 	new = (t_envs *)malloc(sizeof(t_envs));
 	current->next = new;
-	new->full = ft_strdup(str);
-	split_env(&new->full, &new->bef_eq, &new->aft_eq);
+	split_env(ft_strdup(str), &new->key, &new->val);
 	new->next = NULL;
+	new->prev = current;
 }
 
-t_envs	*create_envs(char **env)
+t_envs	*init_envs(char **env)
 {
 	t_envs	*ret;
 	int		i;
 
 	ret = (t_envs *)malloc(sizeof(t_envs));
-	ret->full = ft_strdup(env[0]);
-	split_env(&ret->full, &ret->bef_eq, &ret->aft_eq);
+	split_env(ft_strdup(env[0]), &ret->key, &ret->val);
 	ret->next = NULL;
 	ret->prev = NULL;
-	i = 0;
+	i = 1;
 	while (env[i])
 	{
 		add_node(ret, env[i]);

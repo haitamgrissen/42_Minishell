@@ -1,0 +1,6 @@
+//add search envs by keys
+//search envs ehne adding new node if key not found add new node  if found update value 
+// manage leaks (free olds)
+
+
+//unset (remove node by key)
