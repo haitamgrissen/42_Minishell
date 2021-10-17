@@ -1,6 +1,7 @@
-//add search envs by keys
-//search envs ehne adding new node if key not found add new node  if found update value 
+//add search envs by keys :: DONE
+//search envs and adding new node if key not found add new node  if found update value :: DONE
+//unset (remove node by key) :: DONE
+//check exported key (must with alphabetic chars and must contain only laphanumeric chars) :: Done
+
+   
 // manage leaks (free olds)
-
-
-//unset (remove node by key)

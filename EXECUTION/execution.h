@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/16 17:36:06 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/17 17:33:50 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,18 @@ char		*ft_strdup(char *s1);
 int			ft_strlen(char *s);
 char		**ft_split(char *s, char c);
 int			ft_strcmp(char *s1, char *s2);
+int			ft_isalpha(int c);
+int			ft_isdigit(int c);
+int			ft_isalnum(int c);
 
 // envs
 t_envs		*init_envs(char **env);
 void		add_node(t_envs *head, char	*str);
 void		print_env(t_envs	*envs);
 void		print_export(t_envs *envs);
+t_envs		*check_env_var(t_envs *envs, char	*str);
+
+
+void		unset(t_envs **head, char	*key);
 
 #endif
