@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/17 17:36:15 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/18 13:12:04 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ int		split_env(char *f, char **key, char **val)
 
 	i = 0;
 	if (!f || !ft_isalpha(f[0]))
+	{
+		free(f);
 		return (1);
+	}
 	while (f[i] != '=' && f[i])
 		i++;
 	(*key) = ft_substr(f, 0, i);
@@ -81,7 +84,7 @@ int		split_env(char *f, char **key, char **val)
 		(*val) = NULL;
 	else
 		(*val) = ft_substr(f, i + 1, j);
-
+	free(f);
 	return 0;
 }
 
