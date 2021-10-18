@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/18 15:23:03 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/18 18:54:01 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,12 +65,15 @@ int     main(int ac, char **av, char **env)
 {
 	t_cmd	cmd;
 
-	cmd.args = av + 1;
+	cmd.opt = av[1];
+	cmd.args = av + 2;
 	cmd.args_count = ac - 1;
 	
-	cd(&cmd);
-	pwd();
-	system("leaks a.out");
+
+	echo(&cmd);
+	// cd(&cmd);
+	// pwd();
+	//system("leaks a.out");
 	return 0;
 	t_envs	*envs;
 

@@ -15,5 +15,5 @@ Built-ins
     ◦ env with no options or arguments :: DONE
     ◦ cd with only a relative or absolute path :: DONE (only change getenv() with my getenv())
     ◦ pwd with no options :: DONE
-◦ echo with option -n 
+    ◦ echo with option -n :: DONE
 ◦ exit with no options
