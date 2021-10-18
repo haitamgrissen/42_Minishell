@@ -5,3 +5,15 @@
 
    
 // manage leaks (free olds) :: Done so far
+
+
+
+Built-ins
+
+    ◦ export with no options :: DONE
+    ◦ unset with no options :: DONE
+    ◦ env with no options or arguments :: DONE
+    ◦ cd with only a relative or absolute path :: DONE (only change getenv() with my getenv())
+    ◦ pwd with no options :: DONE
+◦ echo with option -n 
+◦ exit with no options

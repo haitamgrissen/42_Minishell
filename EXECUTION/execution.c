@@ -6,11 +6,13 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/18 13:14:58 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/18 15:23:03 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "./incs/execution.h"
+#include "./incs/builtins.h"
+
 
 void	printbyindex(t_envs *head, int index)
 {
@@ -32,7 +34,7 @@ void	printbyindex(t_envs *head, int index)
 		printf("NULL\n");
 }
 
-void	free_envs(t_envs	**head)///neeeds alot of changes
+void	free_envs(t_envs	**head)
 {
 	t_envs	*tmp;
 
@@ -61,6 +63,15 @@ void	free_envs(t_envs	**head)///neeeds alot of changes
 
 int     main(int ac, char **av, char **env)
 {
+	t_cmd	cmd;
+
+	cmd.args = av + 1;
+	cmd.args_count = ac - 1;
+	
+	cd(&cmd);
+	pwd();
+	system("leaks a.out");
+	return 0;
 	t_envs	*envs;
 
 	envs = init_envs(env);

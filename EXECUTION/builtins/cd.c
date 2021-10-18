@@ -1,28 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/17 17:14:22 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/18 13:38:29 by hgrissen         ###   ########.fr       */
+/*   Created: 2021/10/18 13:39:45 by hgrissen          #+#    #+#             */
+/*   Updated: 2021/10/18 15:42:44 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./incs/execution.h"
+# include "../incs/execution.h"
 
+void	cd(t_cmd *cmd)
+{
+	char	*path;
 
-int		ft_isalpha(int c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'));
-}
-
-int		ft_isdigit(int c)
-{
-	return (c >= '0' && c <= '9');
-}
-int		ft_isalnum(int c)
-{
-	return (ft_isalpha(c) || ft_isdigit(c));
+	printf("%d\n", cmd->args_count);
+	if (cmd->args_count)
+		path = ft_strdup(cmd->args[0]);
+	else
+		path = ft_strdup(getenv("HOME"));// change getenv with my getenv
+	if (chdir(path))
+		printf("%s: Not a directory\n", path);
+	free(path);
 }

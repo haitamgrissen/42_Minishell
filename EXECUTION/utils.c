@@ -1,4 +1,4 @@
-#include "execution.h"
+#include "./incs/execution.h"
 
 int	ft_strcmp(char *s1, char *s2)
 {

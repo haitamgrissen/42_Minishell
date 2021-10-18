@@ -6,11 +6,11 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/18 13:12:04 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/18 14:51:36 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execution.h"
+#include "./incs/builtins.h"
 
 void	print_export(t_envs *envs)
 {
@@ -155,6 +155,7 @@ int		check_key_err(char	*str)
 	}
 	return 1;
 }
+
 void	add_node(t_envs *head, char	*str)
 {
 	t_envs	*current;
