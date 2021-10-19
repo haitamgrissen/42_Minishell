@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/18 18:54:01 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/19 14:37:58 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,31 +64,45 @@ void	free_envs(t_envs	**head)
 int     main(int ac, char **av, char **env)
 {
 	t_cmd	cmd;
-
-	cmd.opt = av[1];
-	cmd.args = av + 2;
-	cmd.args_count = ac - 1;
-	
-
-	echo(&cmd);
-	// cd(&cmd);
-	// pwd();
-	//system("leaks a.out");
-	return 0;
 	t_envs	*envs;
 
 	envs = init_envs(env);
-	add_node(envs, av[1]);
-	unset(&envs, av[2]);
-	//unset(&envs, av[3]);
-	//unset(&envs, av[4]);
+	g_exe.envs = envs;
+//echo tests
+	// cmd.args = av + 1;
+	// cmd.args_count = ac - 1;
+	// echo(&cmd);
+	//return (0);
+
+
+//cd and pwd test
+	// cmd.args = av + 1;
+	// cmd.args_count = ac - 1;
+	// remove_node(&envs, av[2]);
+	// remove_node(&envs, av[3]);
+	// cd(&cmd);
+	// pwd();
+	// print_env(envs);
+	// system("leaks a.out");
+	// return 0;
+
+
+//unset test
+	cmd.args = av + 1;
+	cmd.args_count = ac - 1;
+
+	export(&cmd);
+	//unset(&cmd);
+	// add_node(envs, av[1]);
+	// remove_node(&envs, av[2]);
+	//remove_node(&envs, av[3]);
+	//remove_node(&envs, av[4]);
 
 	//printbyindex(envs, 50);
 	print_env(envs);
 	//print_export(envs);  
-	//check_env_var(envs, av[1]);
+	//getenv_node(envs, av[1]);
 
 	
 	//free_envs(&envs);
-	//system("leaks a.out");
 }

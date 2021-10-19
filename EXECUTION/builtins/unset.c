@@ -1,61 +1,53 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/18 18:20:41 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 11:10:23 by hgrissen         ###   ########.fr       */
+/*   Created: 2021/10/19 14:05:18 by hgrissen          #+#    #+#             */
+/*   Updated: 2021/10/19 14:34:49 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/builtins.h"
 
-int	is_rmnl(char *str)
+void	remove_node(t_envs **head, char	*key)
 {
-	int	i;
+	t_envs	*tmp;
 
-	if (str[0] == '-' && str[1] == 'n')
+	tmp = getenv_node(*head, key);
+	if (tmp)
 	{
-		i = 2;
-		while (str[i])
+		if (tmp->prev == NULL)
 		{
-			if (str[i] != 'n')
-				return (0);
-			i++;
+			tmp->next->prev = NULL;
+			*head = tmp->next;
 		}
-		return (1);
+		else if (tmp->next == NULL)
+		{
+			tmp->prev->next = NULL;
+		}
+		else
+		{
+			tmp->next->prev = tmp->prev;
+			tmp->prev->next = tmp->next;
+		}
+		free(tmp->key);
+		if (tmp->val != NULL)
+			free(tmp->val);
+		free(tmp);
 	}
-	else
-		return (0);
 }
 
-void	echo(t_cmd	*cmd)
+void	unset(t_cmd *cmd)
 {
-	int	rm_nl;
-	int	printed;
 	int	i;
 
-	rm_nl = 0;
-	printed = 0;
 	i = 0;
 	while (cmd->args[i])
 	{
-		if (printed == 0)
-		{
-			if (is_rmnl(cmd->args[i]))
-				rm_nl = 1;
-			else
-			{
-				printed = 1;
-				printf("%s", cmd->args[i]);
-			}
-		}
-		else
-			printf(" %s", cmd->args[i]);
+		remove_node(&g_exe.envs, cmd->args[i]);
 		i++;
 	}
-	if (rm_nl == 0)
-		printf("\n");
 }
