@@ -10,15 +10,47 @@
 
 Built-ins
 
-    ◦ env with no options or arguments :: DONE
     ◦ pwd with no options :: DONE
     ◦ echo with option -n :: DONE
-    ◦ cd with only a relative or absolute path :: DONE
+    ◦ cd with only a relative or absolute path :: DONE ///add perror
+    ◦ export with no options :: DONE
     
-    
-    
-    ◦ unset with no options :: ONGOING
-    ◦ export with no options :: ONGOING
-        -etirate over all args to add or update or remove them form envs
-
 ◦ exit with no options
+
+
+
+    ◦ unset with no options :: DONE
+        make
+
+    ◦ env with no options or arguments :: DONE
+            make env head node just a entrance and should not hold any data but the next node
+
+
+
+
+USEFUL LINKS ::
+pipes implemntatiion :
+    http://www.cs.loyola.edu/~jglenn/702/S2005/Examples/dup2.html
+
+
+PIPES IMPLEMNTATIION :::::::
+
+i = -1;
+pid_t pid;
+int *pipesfd = malloc(sizeof(int) * (nbcommands - 1) * 2);
+
+while (++i < nbcommands - 1)
+{
+    pipe(pipesfd + 2 * i);
+}
+
+while (++i < nbcommands)
+{
+    pid = fork();
+    if (pid == 0)
+    {
+        child_process(..., i);
+    }
+}
+
+close(fddyal lpipe)

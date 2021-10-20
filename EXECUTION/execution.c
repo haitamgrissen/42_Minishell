@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 14:37:58 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/20 18:06:36 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,14 @@ int     main(int ac, char **av, char **env)
 
 	envs = init_envs(env);
 	g_exe.envs = envs;
+
+	// char	*CMD[] = {"lsbdf", "-la", NULL};
+	// int ret = execve("/bin/lsbbddsf", CMD, NULL);
+	// printf("ret : %d", ret);
+
+
+
+	
 //echo tests
 	// cmd.args = av + 1;
 	// cmd.args_count = ac - 1;
@@ -78,28 +86,31 @@ int     main(int ac, char **av, char **env)
 //cd and pwd test
 	// cmd.args = av + 1;
 	// cmd.args_count = ac - 1;
-	// remove_node(&envs, av[2]);
-	// remove_node(&envs, av[3]);
+	// //remove_node(&envs, av[2]);
+	// //remove_node(&envs, av[3]);
 	// cd(&cmd);
 	// pwd();
 	// print_env(envs);
-	// system("leaks a.out");
+	// printf("**********************\n");
+	// char 	*buffer = malloc(1000);
+	// perror(buffer);
+	// // system("leaks a.out");
+	// // return 0;
 	// return 0;
 
-
-//unset test
+//unset test and export
 	cmd.args = av + 1;
 	cmd.args_count = ac - 1;
 
-	export(&cmd);
-	//unset(&cmd);
-	// add_node(envs, av[1]);
-	// remove_node(&envs, av[2]);
+	//export(&cmd);
+	unset(&cmd);
+	//add_node(envs, av[1]);
+	//remove_node(&envs, av[2]);
 	//remove_node(&envs, av[3]);
 	//remove_node(&envs, av[4]);
 
 	//printbyindex(envs, 50);
-	print_env(envs);
+	//print_env(envs);
 	//print_export(envs);  
 	//getenv_node(envs, av[1]);
 
