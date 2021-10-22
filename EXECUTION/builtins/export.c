@@ -6,18 +6,18 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 14:38:53 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/21 13:23:41 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/builtins.h"
 
-void	print_export(t_envs *envs)
+void	print_export(void)
 {
 	t_envs	*current;
 
-	current = envs;
-	while (current->next != NULL)
+	current = g_exe.envs;
+	while (current && current->next)
 	{
 		if (current->val == NULL)
 			printf("declare -x %s\n", current->key);
@@ -25,9 +25,9 @@ void	print_export(t_envs *envs)
 			printf("declare -x %s=\"%s\"\n", current->key, current->val);
 		current = current->next;
 	}
-	if (current->val == NULL)
+	if (current && current->val == NULL)
 		printf("declare -x %s\n", current->key);
-	else
+	else if (current && current->val)
 		printf("declare -x %s=\"%s\"\n", current->key, current->val);
 }
 
@@ -41,7 +41,7 @@ int	update_node(t_envs *head, char	*str)
 	while (str[i] != '=' && str[i])
 		i++;
 	tmp_key = ft_substr(str, 0, i);
-	tmp = getenv_node(head, tmp_key);
+	tmp = getenv_node(tmp_key);
 	if (tmp != NULL)
 	{
 		if (tmp->val != NULL)

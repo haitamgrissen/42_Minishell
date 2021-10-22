@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:05:18 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 14:34:49 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/21 13:24:50 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,13 @@ void	remove_node(t_envs **head, char	*key)
 {
 	t_envs	*tmp;
 
-	tmp = getenv_node(*head, key);
+	tmp = getenv_node(key);
 	if (tmp)
 	{
 		if (tmp->prev == NULL)
 		{
 			tmp->next->prev = NULL;
-			*head = tmp->next;
+			*head = (tmp)->next;
 		}
 		else if (tmp->next == NULL)
 		{

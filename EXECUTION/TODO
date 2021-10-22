@@ -14,16 +14,13 @@ Built-ins
     ◦ echo with option -n :: DONE
     ◦ cd with only a relative or absolute path :: DONE ///add perror
     ◦ export with no options :: DONE
+    ◦ unset with no options :: DONE
+    ◦ env with no options or arguments :: DONE
     
 ◦ exit with no options
 
 
 
-    ◦ unset with no options :: DONE
-        make
-
-    ◦ env with no options or arguments :: DONE
-            make env head node just a entrance and should not hold any data but the next node
 
 
 
@@ -54,3 +51,8 @@ while (++i < nbcommands)
 }
 
 close(fddyal lpipe)
+
+
+
+
+execve

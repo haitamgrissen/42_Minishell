@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 13:39:45 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 14:09:54 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/21 13:24:38 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	update_pwds(char *newpwd)
 	t_envs	*currentnode;
 	char	*pwd;
 
-	oldnode = getenv_node(g_exe.envs, "OLDPWD");
-	currentnode = getenv_node(g_exe.envs, "PWD");
+	oldnode = getenv_node("OLDPWD");
+	currentnode = getenv_node("PWD");
 	if (oldnode && oldnode->val != NULL)
 		free(oldnode->val);
 	if (oldnode)
@@ -43,7 +43,7 @@ void	cd(t_cmd *cmd)
 		path = ft_strdup(cmd->args[0]);
 	else
 	{
-		env = getenv_node(g_exe.envs, "HOME");
+		env = getenv_node("HOME");
 		path = ft_strdup(env->val);
 	}
 	if (chdir(path))

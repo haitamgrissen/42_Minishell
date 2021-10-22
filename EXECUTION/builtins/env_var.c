@@ -6,17 +6,17 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/19 14:41:37 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/21 13:32:48 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/builtins.h"
 
-void	print_env(t_envs	*envs)
+void	print_env(void)
 {
 	t_envs	*current;
 
-	current = envs;
+	current = g_exe.envs;
 	while (current->next != NULL)
 	{
 		if (current->val != NULL)
@@ -27,18 +27,18 @@ void	print_env(t_envs	*envs)
 		printf("%s=%s\n", current->key, current->val);
 }
 
-t_envs	*getenv_node(t_envs *head, char	*str)
+t_envs	*getenv_node(char	*key)
 {
 	t_envs	*current;
 
-	current = head;
+	current = g_exe.envs;
 	while (current->next != NULL)
 	{
-		if (ft_strcmp(current->key, str) == 0)
+		if (ft_strcmp(current->key, key) == 0)
 			return (current);
 		current = current->next;
 	}
-	if (ft_strcmp(current->key, str) == 0)
+	if (ft_strcmp(current->key, key) == 0)
 		return (current);
 	return (NULL);
 }
@@ -84,12 +84,13 @@ int	check_key_err(char	*str)
 	return (1);
 }
 
-t_envs	*init_envs(char **env)
+void	init_envs(char **env)
 {
 	t_envs	*ret;
 	int		i;
 
 	ret = (t_envs *)malloc(sizeof(t_envs));
+	g_exe.envs = ret;
 	ret->key = NULL;
 	ret->val = NULL;
 	split_env(ft_strdup(env[0]), &ret->key, &ret->val);
@@ -101,6 +102,4 @@ t_envs	*init_envs(char **env)
 		add_node(ret, env[i]);
 		i++;
 	}
-	g_exe.envs = ret;
-	return (ret);
 }
