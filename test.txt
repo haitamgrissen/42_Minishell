@@ -1,0 +1,52 @@
+;
+&&
+||
+ls > $NOT_VALID_ENV | "< file" | ">> here" '|' cat | > f1 >"$USER" echo|wc>f1<f1 |"ifconfig '|' grep ip" 
+woed > word | word
+1st-----
+ls > $NOT_VALID_ENV |
+"< file" |
+">> here" '|' cat |
+> f1 >"$USER" echo|
+wc>f1<f1 |
+"ifconfig  '|' grep ip"
+2stp-----------------------
+ls > $NOT_VALID_ENV 
+ls > "NULL"
+***
+{< file}
+**
+{>> here} {|} {cat}
+**
+> f1 > "$USER" echo
+{>} {f1} {>} {sel-fcht} echo ls
+{>} {f1} {>} {sel-fcht}
+echo ls
+0     1
+**
+wc
+>
+f1
+<
+f1
+hh
+------------
+{ifconfig '|' grep ip}
+
+-------
+echo "$USER"
+****
+echo$USER
+e
+c
+h
+o
+s
+e
+L
+-
+f
+c 
+h 
+t
+ls >| wc syntax error

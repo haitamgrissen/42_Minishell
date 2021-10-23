@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/14 19:08:18 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/23 13:13:04 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,14 +188,184 @@ void parse(char *str)
     execute(shell->str, shell->first);
 }
 
-int main(int ac, char **av)
+int tab_len(char **s) {
+
+    int len;
+
+    len = 0;
+    if (s)
+        while (s[len] != NULL)
+            len++;
+    return len;
+}
+
+char    **realloc_tokens(char **s, char *t) {
+
+    int i;
+    int len;
+    char    **n;
+
+    i = -1;
+    len =  tab_len(s);
+    n =  (char **)malloc(sizeof((char *) * (n + 2)));
+    while (++i < len)
+        n[i] = s[i];
+    if (t)
+        n[i++] = t;
+    n[i] = NULL;
+    return n;
+
+}
+
+char    *fill_tokens(char *line, int *pos, char c) {
+
+    int i;
+    char *t;
+    int insgl;
+    int indbl;
+    
+    i = 0;
+    insgl = 0;
+    indbl = 0;
+    while (line[i] != '\0') {
+
+        while (line[i] == '\"')
+        {
+            i++;
+            indbl++;
+        }    
+        while (line[i] == '\'')
+        {
+            i++;
+            insgl++;
+        }
+        if (line[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            break ;
+        i++;
+    }
+    t = (char *)malloc(sizeof(char) * (i + 1));
+    i = 0;
+    while (line[i] != '\0') {
+
+        while (line[i] == '\"')
+        {
+            i++;
+            indbl++;
+        }    
+        while (line[i] == '\'')
+        {
+            i++;
+            insgl++;
+        }
+        if (line[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            break ;
+        t[i] = line[i];
+        i++;
+    }
+    *pos += i;
+    return t;
+}
+char    *get_inquotes(char *line, int *pos, char c) {
+
+    int i;
+    char *t;
+    int insgl;
+    int indbl;
+    
+    i = 0;
+    insgl = 0;
+    indbl = 0;
+    while (line[i] != '\0') {
+        
+                while (line[i] == '\"')
+        {
+            i++;
+            indbl++;
+        }    
+        while (line[i] == '\'')
+        {
+            i++;
+            insgl++;
+        }
+        if (line[i] != c  && (indbl % 2 == 0) && (insgl % 2 == 0))
+            break ;
+        i++;
+    }
+    t = (char *)malloc(sizeof(char) * (i + 1));
+    i = 0;
+    while (line[i] != '\0') {
+
+        while (line[i] == '\"')
+        {
+            i++;
+            indbl++;
+        }    
+        while (line[i] == '\'')
+        {
+            i++;
+            insgl++;
+        }
+        if (line[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            break ;
+        t[i] = line[i];
+        i++;
+    }
+    *pos += i;
+    return t;
+}
+char    **split_quotes( char *s , char c) {
+
+    int i;
+    int insgl;
+    int indbl;
+    int cnt = 0;
+
+    i = 0;
+    insgl = 0;
+    indbl = 0;
+    char    **tokens = NULL;
+    while (i < strlen(s) && s[i] != '\0') {
+        
+        while (s[i] == '\"')
+        {
+            i++;
+            indbl++;
+        }    
+        while (s[i] == '\'')
+        {
+            i++;
+            insgl++;
+        }   
+        while (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            i++;
+        if (s[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            tokens = realloc_tokens(tokens, fill_tokens(s + i, &i, c));
+        else
+        {
+            //tokens = realloc_tokens(tokens, get_inquotes(s + i, &i, c)); //blan
+            
+        
+        }
+        //else
+        //    printf("%c", s[i]);
+        i++;
+    }
+    //printf("|\n");
+    i = 0;
+    while (tokens[i] != NULL) {
+    
+        printf("|%s|", tokens[i]);
+        i++;
+    }
+    return NULL;
+}
+
+int main(int ac, char **av, char **env)
 {
     t_shell *sh;
     hh = 0;
     sh = malloc(sizeof(t_shell));
     sh->str = (char*)malloc(sizeof(char) + 4);
-    //sh->str = ft_strdup("");
-    //printf("%s",sh->str);
     while(1)
     {
         sh->str = readline("Minishell $>: ");
@@ -204,8 +374,9 @@ int main(int ac, char **av)
             ft_putstr("exit");
             exit(0);
         }
-        //ft_putstr(sh->str);
-        parse(sh->str);
+        // start_shit(sh->str);
+        split_quotes(sh->str, ' ');
+        //parse(sh->str);
     }
  
     return(0);

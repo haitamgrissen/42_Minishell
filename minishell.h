@@ -16,6 +16,7 @@
 #include <readline/history.h>
 typedef struct shell
 {
+    char **all_string;
     char *str;
     char *first; // first command that has been entered " ls -al"  "first = ls" in this case
     char *second; // second arg
@@ -31,4 +32,6 @@ char		*kayn_ster(char *str);
 int			ft_strlen(char *s);
 char		**ft_split(char *s, char c);
 void        parse(char *str);
+void start_shit(char *str);
+char *ft_putstr(char *str);
 #endif 

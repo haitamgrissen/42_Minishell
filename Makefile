@@ -6,25 +6,33 @@
 #    By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/11 16:58:33 by sel-fcht          #+#    #+#              #
-#    Updated: 2021/10/11 17:09:12 by sel-fcht         ###   ########.fr        #
+#    Updated: 2021/10/23 18:05:15 by sel-fcht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRC = minishell.c minishell.h split.c get_next_line.c gnl_outils.c
+SRC = minishell.c\
+	  minishell.h\
+	  split.c\
+	  get_next_line.c\
+	  gnl_outils.c\
+	  parsing.c
 NAME = minishell
 
 LDFLAGS=-L/Users/sel-fcht/.brew/opt/readline/lib
 CPPFLAGS=-I/Users/sel-fcht/.brew/opt/readline/include
+
 all: $(NAME)
 
-$(NAME): $(SRC)
+$(NAME):
+
 	gcc -lreadline $(LDFLAGS) $(CPPFLAGS) $(SRC)
 
 clean:
 	rm -rf *.o
+
 fclean: clean
 	rm -f $(NAME)
-	rm -rf minishell
+
 re : fclean all
 
 test:
@@ -33,5 +41,5 @@ norme:
 	norminette *.c *.h
 push:
 	git add .
-	git commit -m "ls echo clear exit system commands"
+	git commit -m "add tokens"
 	git push
