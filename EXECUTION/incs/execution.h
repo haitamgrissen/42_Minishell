@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/20 18:01:54 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/21 13:39:35 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef	struct		s_exe
 {
 	t_cmd			*cmd;
 	t_envs			*envs;
+	int				pipe_count;
 	int				ret;
 }					t_exe;
 

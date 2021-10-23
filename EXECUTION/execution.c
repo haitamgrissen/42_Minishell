@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/20 18:06:36 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/10/22 21:05:28 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,18 +56,23 @@ void	free_envs(t_envs	**head)
 		free(tmp->val);
 	if (tmp != NULL)
 		free(tmp);
-	
-
 }
+
+void	execute_cmd(t_cmd *cmd)
+{
+	
+}
+
+
 
 
 int     main(int ac, char **av, char **env)
 {
 	t_cmd	cmd;
 	t_envs	*envs;
-
-	envs = init_envs(env);
-	g_exe.envs = envs;
+	
+	
+	init_envs(env);
 
 	// char	*CMD[] = {"lsbdf", "-la", NULL};
 	// int ret = execve("/bin/lsbbddsf", CMD, NULL);
@@ -101,17 +106,40 @@ int     main(int ac, char **av, char **env)
 //unset test and export
 	cmd.args = av + 1;
 	cmd.args_count = ac - 1;
-
+	char	**array;
+	
+	array = env_to_arr();
+	int i = -1;
+	while (array[++i])
+	{
+		printf("%s\n", array[i]);
+		//free(array[i]);
+	}
+	//free(array);
+	
 	//export(&cmd);
-	unset(&cmd);
+	
+	//unset(&cmd);
 	//add_node(envs, av[1]);
 	//remove_node(&envs, av[2]);
 	//remove_node(&envs, av[3]);
 	//remove_node(&envs, av[4]);
 
-	//printbyindex(envs, 50);
-	//print_env(envs);
-	//print_export(envs);  
+
+/// EXECVE TEST
+
+	//char *a[] = {"/bin/ls", "-la", (char *)0};
+
+	//execve(a[0], a, NULL);
+
+	//printf("finished exe\n");
+	//return 0;
+
+	//printbyindex(envs, 1);
+	//print_env();
+	//print_export(); 
+	//free(cmd.args[0]);
+	//system("leaks a.out");
 	//getenv_node(envs, av[1]);
 
 	
