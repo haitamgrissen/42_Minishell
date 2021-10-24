@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/23 13:13:04 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/24 15:13:28 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -227,14 +227,14 @@ char    *fill_tokens(char *line, int *pos, char c) {
     i = 0;
     insgl = 0;
     indbl = 0;
-    while (line[i] != '\0') {
-
-        while (line[i] == '\"')
+    while (line[i] != '\0')
+    {
+        if (line[i] == '\"')
         {
             i++;
             indbl++;
         }    
-        while (line[i] == '\'')
+        if (line[i] == '\'')
         {
             i++;
             insgl++;
@@ -324,6 +324,8 @@ char    **split_quotes( char *s , char c) {
     insgl = 0;
     indbl = 0;
     char    **tokens = NULL;
+    cnt = check_quotes(s);
+    
     while (i < strlen(s) && s[i] != '\0') {
         
         while (s[i] == '\"')
@@ -335,7 +337,9 @@ char    **split_quotes( char *s , char c) {
         {
             i++;
             insgl++;
-        }   
+        }  
+        
+        printf("----->%d %d\n",insgl, indbl); 
         while (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
             i++;
         if (s[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
@@ -374,7 +378,12 @@ int main(int ac, char **av, char **env)
             ft_putstr("exit");
             exit(0);
         }
-        // start_shit(sh->str);
+        if (sh->str == '\0')
+        {
+            ft_putstr("Enter a command\n");
+        }
+        add_history(sh->str);
+       // start_shit(sh->str);
         split_quotes(sh->str, ' ');
         //parse(sh->str);
     }

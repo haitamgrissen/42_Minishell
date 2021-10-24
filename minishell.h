@@ -34,4 +34,5 @@ char		**ft_split(char *s, char c);
 void        parse(char *str);
 void start_shit(char *str);
 char *ft_putstr(char *str);
+int check_quotes(char *str);
 #endif 
