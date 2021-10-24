@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/24 15:13:28 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/24 19:22:03 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int tab_len(char **s) {
 
     len = 0;
     if (s)
-        while (s[len] != NULL)
+        while (s[len])
             len++;
     return len;
 }
@@ -205,13 +205,19 @@ char    **realloc_tokens(char **s, char *t) {
     int len;
     char    **n;
 
-    i = -1;
+    i = 0;
     len =  tab_len(s);
-    n =  (char **)malloc(sizeof((char *) * (n + 2)));
-    while (++i < len)
+    n =  (char **)malloc(sizeof(char *) * (len + 2));
+    while (i < len)
+    {
         n[i] = s[i];
+        i++;
+    }
     if (t)
-        n[i++] = t;
+    {
+        n[i] = t;
+        i++;
+    }
     n[i] = NULL;
     return n;
 
@@ -229,12 +235,12 @@ char    *fill_tokens(char *line, int *pos, char c) {
     indbl = 0;
     while (line[i] != '\0')
     {
-        if (line[i] == '\"')
+        while (line[i] == '\"')
         {
             i++;
             indbl++;
         }    
-        if (line[i] == '\'')
+        while (line[i] == '\'')
         {
             i++;
             insgl++;
@@ -259,58 +265,66 @@ char    *fill_tokens(char *line, int *pos, char c) {
         }
         if (line[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
             break ;
+        else {
+            
         t[i] = line[i];
         i++;
+        }
+
     }
     *pos += i;
     return t;
 }
-char    *get_inquotes(char *line, int *pos, char c) {
+char    *get_inquotes(char *line, int *pos, int *insgl, int *indbl, char c) {
 
     int i;
-    char *t;
-    int insgl;
-    int indbl;
+    char *t = NULL;
+    int a = *insgl;
+    int b = *indbl;
+    
     
     i = 0;
-    insgl = 0;
-    indbl = 0;
     while (line[i] != '\0') {
         
-                while (line[i] == '\"')
+        while (line[i] == '\"')
         {
             i++;
-            indbl++;
+            (a)++;
         }    
         while (line[i] == '\'')
         {
             i++;
-            insgl++;
+            (b)++;
         }
-        if (line[i] != c  && (indbl % 2 == 0) && (insgl % 2 == 0))
+        if (line[i] == c  && ((a) % 2 == 0) && ((b) % 2 == 0))
             break ;
         i++;
     }
     t = (char *)malloc(sizeof(char) * (i + 1));
     i = 0;
-    while (line[i] != '\0') {
+    while (i < strlen(line) && line[i] != '\0') {
 
-        while (line[i] == '\"')
+        while (i < strlen(line) && line[i] == '\"')
         {
             i++;
-            indbl++;
+            (*indbl)++;
         }    
-        while (line[i] == '\'')
+        while (i < strlen(line) && line[i] == '\'')
         {
             i++;
-            insgl++;
+            (*insgl)++;
         }
-        if (line[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
+        if (i < strlen(line) && line[i] == c && ((*indbl) % 2 == 0) && ((*insgl) % 2 == 0))
             break ;
-        t[i] = line[i];
-        i++;
+        else {
+            if (i < strlen(line)) {
+                t[i] = line[i];
+                i++;
+            }
+        }
     }
-    *pos += i;
+    t[i] = '\0';
+    *pos += i + 1;
     return t;
 }
 char    **split_quotes( char *s , char c) {
@@ -328,38 +342,41 @@ char    **split_quotes( char *s , char c) {
     
     while (i < strlen(s) && s[i] != '\0') {
         
-        while (s[i] == '\"')
+        while (i < strlen(s) &&  s[i] == '\"')
         {
             i++;
             indbl++;
         }    
-        while (s[i] == '\'')
+        while (i < strlen(s) && s[i] == '\'')
         {
             i++;
             insgl++;
         }  
         
         printf("----->%d %d\n",insgl, indbl); 
-        while (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+        while (i < strlen(s) &&  s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
             i++;
-        if (s[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
+        if (i < strlen(s) &&  s[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
             tokens = realloc_tokens(tokens, fill_tokens(s + i, &i, c));
         else
-        {
-            //tokens = realloc_tokens(tokens, get_inquotes(s + i, &i, c)); //blan
+            tokens = realloc_tokens(tokens, get_inquotes(s + i, &i, &insgl, &indbl, c)); //blan
             
         
-        }
+       // }
         //else
         //    printf("%c", s[i]);
-        i++;
+        if (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+            i++;
     }
     //printf("|\n");
     i = 0;
+    if (tokens)
+    {
     while (tokens[i] != NULL) {
     
         printf("|%s|", tokens[i]);
         i++;
+    }
     }
     return NULL;
 }
