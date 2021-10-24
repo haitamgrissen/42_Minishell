@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/24 19:22:03 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/24 21:57:08 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,8 +251,8 @@ char    *fill_tokens(char *line, int *pos, char c) {
     }
     t = (char *)malloc(sizeof(char) * (i + 1));
     i = 0;
-    while (line[i] != '\0') {
-
+    while (line[i] != '\0') 
+    {
         while (line[i] == '\"')
         {
             i++;
@@ -265,12 +265,12 @@ char    *fill_tokens(char *line, int *pos, char c) {
         }
         if (line[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
             break ;
-        else {
-            
-        t[i] = line[i];
-        i++;
+        else
+        {
+            t[i] = line[i];
+            i++;
         }
-
+    printf("---->|%s|\n",t);
     }
     *pos += i;
     return t;
@@ -314,7 +314,7 @@ char    *get_inquotes(char *line, int *pos, int *insgl, int *indbl, char c) {
             i++;
             (*insgl)++;
         }
-        if (i < strlen(line) && line[i] == c && ((*indbl) % 2 == 0) && ((*insgl) % 2 == 0))
+        if (i < strlen(line) && line[i] == c )
             break ;
         else {
             if (i < strlen(line)) {
@@ -322,6 +322,7 @@ char    *get_inquotes(char *line, int *pos, int *insgl, int *indbl, char c) {
                 i++;
             }
         }
+        printf("---hihi->|%s|\n",t);
     }
     t[i] = '\0';
     *pos += i + 1;
@@ -339,9 +340,8 @@ char    **split_quotes( char *s , char c) {
     indbl = 0;
     char    **tokens = NULL;
     cnt = check_quotes(s);
-    
-    while (i < strlen(s) && s[i] != '\0') {
-        
+    while (i < strlen(s) && s[i] != '\0') 
+    {
         while (i < strlen(s) &&  s[i] == '\"')
         {
             i++;
@@ -352,23 +352,16 @@ char    **split_quotes( char *s , char c) {
             i++;
             insgl++;
         }  
-        
-        printf("----->%d %d\n",insgl, indbl); 
-        while (i < strlen(s) &&  s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
+        printf("--->DOUBLE QUOTES%d\n",indbl); 
+        while (i < strlen(s) &&  s[i] == c)
             i++;
-        if (i < strlen(s) &&  s[i] != c && (indbl % 2 == 0) && (insgl % 2 == 0))
+        if (i < strlen(s) &&  s[i] != c )
             tokens = realloc_tokens(tokens, fill_tokens(s + i, &i, c));
         else
             tokens = realloc_tokens(tokens, get_inquotes(s + i, &i, &insgl, &indbl, c)); //blan
-            
-        
-       // }
-        //else
-        //    printf("%c", s[i]);
         if (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
             i++;
     }
-    //printf("|\n");
     i = 0;
     if (tokens)
     {
@@ -378,13 +371,14 @@ char    **split_quotes( char *s , char c) {
         i++;
     }
     }
-    return NULL;
+    return tokens;
 }
 
 int main(int ac, char **av, char **env)
 {
     t_shell *sh;
     hh = 0;
+    char **line;
     sh = malloc(sizeof(t_shell));
     sh->str = (char*)malloc(sizeof(char) + 4);
     while(1)
@@ -395,13 +389,12 @@ int main(int ac, char **av, char **env)
             ft_putstr("exit");
             exit(0);
         }
-        if (sh->str == '\0')
-        {
+        if (*sh->str == '\0')
             ft_putstr("Enter a command\n");
-        }
         add_history(sh->str);
        // start_shit(sh->str);
-        split_quotes(sh->str, ' ');
+        line = split_quotes(sh->str, ' ');
+        
         //parse(sh->str);
     }
  
