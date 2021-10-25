@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/24 21:57:08 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/25 19:30:53 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -270,7 +270,6 @@ char    *fill_tokens(char *line, int *pos, char c) {
             t[i] = line[i];
             i++;
         }
-    printf("---->|%s|\n",t);
     }
     *pos += i;
     return t;
@@ -322,7 +321,6 @@ char    *get_inquotes(char *line, int *pos, int *insgl, int *indbl, char c) {
                 i++;
             }
         }
-        printf("---hihi->|%s|\n",t);
     }
     t[i] = '\0';
     *pos += i + 1;
@@ -352,7 +350,7 @@ char    **split_quotes( char *s , char c) {
             i++;
             insgl++;
         }  
-        printf("--->DOUBLE QUOTES%d\n",indbl); 
+        printf("--->DOUBLE QUOTES = %d\n",indbl); 
         while (i < strlen(s) &&  s[i] == c)
             i++;
         if (i < strlen(s) &&  s[i] != c )
@@ -360,13 +358,13 @@ char    **split_quotes( char *s , char c) {
         else
             tokens = realloc_tokens(tokens, get_inquotes(s + i, &i, &insgl, &indbl, c)); //blan
         if (s[i] == c && (indbl % 2 == 0) && (insgl % 2 == 0))
-            i++;
+           i++;
     }
+    printf("--> HOW MUCH I EQUAL = %d",i);
     i = 0;
     if (tokens)
     {
-    while (tokens[i] != NULL) {
-    
+        while (tokens[i] != NULL) {
         printf("|%s|", tokens[i]);
         i++;
     }
@@ -390,7 +388,10 @@ int main(int ac, char **av, char **env)
             exit(0);
         }
         if (*sh->str == '\0')
+        {
             ft_putstr("Enter a command\n");
+            continue;
+        }
         add_history(sh->str);
        // start_shit(sh->str);
         line = split_quotes(sh->str, ' ');

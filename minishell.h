@@ -21,7 +21,34 @@ typedef struct shell
     char *first; // first command that has been entered " ls -al"  "first = ls" in this case
     char *second; // second arg
     int val;
-}t_shell;
+}    t_shell;
+
+typedef struct s_quotes
+{
+    int single;
+    int dbl;
+}      t_quotes;
+
+typedef struct s_command
+{
+    char **tokens;
+    char **in;
+    char **out;
+}   t_command;
+
+typedef struct s_pipeline
+{
+    t_command **cmds;
+    int nbr_of_commands;
+
+}   t_pipeline;
+
+typedef struct s_redirections
+{
+    char **tokens;
+    char **inside;
+    char **outside;
+}   t_redirections;
 int hh;
 int         get_next_line(int fd, char **line);
 char        *ft_substr(char *s, unsigned int start, size_t len);
@@ -32,7 +59,7 @@ char		*kayn_ster(char *str);
 int			ft_strlen(char *s);
 char		**ft_split(char *s, char c);
 void        parse(char *str);
-void start_shit(char *str);
-char *ft_putstr(char *str);
-int check_quotes(char *str);
+void        start_shit(char *str);
+char        *ft_putstr(char *str);
+int         check_quotes(char *str);
 #endif 
