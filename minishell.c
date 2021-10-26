@@ -6,13 +6,101 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/25 19:30:53 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/26 21:35:19 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void ft_bzero(void *ptr)
+int escape(char *s, int pos)
+{
+    int i;
+    int c;
+    c = 0;
+    i = 0;
+    while(pos>=i)
+    {
+        if (s[pos] == '\\')
+            c++;
+        else
+            break;
+        pos--;
+    }
+    if (c%2 != 0)
+        return (1);
+    return (0);
+}
+void klawi(char *line, int *end, int *in, char **tmp)
+{
+    if ((*tmp = insi(line + 1, end , *line)))
+    {
+        *in = 1;
+        free(*tmp);
+    }
+}
+int is_quoted(char c)
+{
+    if (c == '\'' || c == '\"')
+        return (1);
+    else
+        return (0);
+}
 
+char *get_arguments(char *line, char c, int *pos)
+{
+    int i;
+    int end;
+    int in;
+    char *tmp[2];
+
+    i = 0;
+    in = 0;
+    ft_bzero(tmp, 2 * sizeof(char *));
+    while(line[i])
+    {
+        if((in = 0) && !escape(line, i - 1) && is_quoted(line[i]))
+        {
+            end = i + 1;
+            klawi(&line[i], &end, &in, &tmp[1]);
+        }
+        if (i + 1 == end)
+            in = 0;
+        if (line[i] == c && in == 0 && !escape(line, i - 1))
+        {
+            *pos += i;
+            break;
+        }
+        tmp[0] = append(tmp[0], line[i++]);
+    }
+    if (line[i] == '\0')
+        *pos += i -1;
+}
+char **parser_split(char *line, char c)
+{
+    int i;
+    int nbr;
+    char **split;
+    int j;
+    char *tmp;
+
+    i = 0;
+    j = 0;
+    nbr = parsing(line, c);
+    if (!(split = (char **)malloc(sizeof(char *) * (nbr + 1))))
+        return(NULL);
+    i = 0;
+    while(i < nbr)
+    {
+        tmp = get_arguments(line + j, c, &j);
+        split[i] = ft_strtrim(tmp, " \t");
+        free(tmp);
+        j++;
+        i++;
+    }
+    split[i] = NULL;
+    return (split);
+}
 
 char *ft_putstr(char *str)
 {

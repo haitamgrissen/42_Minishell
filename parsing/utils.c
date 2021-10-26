@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse.c                                            :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/25 20:03:34 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/26 20:42:10 by sel-fcht         ###   ########.fr       */
+/*   Created: 2021/10/26 19:57:01 by sel-fcht          #+#    #+#             */
+/*   Updated: 2021/10/26 20:08:23 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
-
-void demarri()
+t_pipeline **parse_info(char *line)
 {
-    t_pipeline **long_str;
-    char *line;
-    while(1)
+    char *ch_line;
+    t_pipeline **parse;
+    int i;
+    int flag;
+    
+    ch_line = ft_strdup("");
+    while(line[i]!= '\0')
     {
-        line = readline("Minishell $>: ");
-        if (*line == '\0')
+        if (line[i] == '\'')
         {
-            ft_putstr("Enter A Command\n");
-            continue;
+            while(line[i] != )
         }
-        add_history(line);
-        long_str = parse_info(line);
-    }
-}
-
-int main(int ac, char **av, char **env)
-{
-    if (ac == 1)
-        demarri();
-    else
-        ft_putstr("Usage: ./Minshell");
+    }    
 }

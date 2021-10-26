@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/23 12:01:20 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/23 12:36:32 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/10/26 20:42:18 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@ void start_shit(char *str)
     i = check_quotes(str);
     if (i == 0)
         ft_putstr("Minishell : Syntax Error With open Quotes\n");
-    
-    
-    
+
     
 }
