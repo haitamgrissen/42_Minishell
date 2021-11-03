@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:06:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/22 21:06:43 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:31:52 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*env_index(int index)
 	char	*str;
 	int		i;
 
-	current = g_exe.envs;
+	current = g_exe.envs_list;
 	i = 0;
 	while (current->next != NULL && i < index)
 	{
@@ -39,7 +39,7 @@ int	env_len(void)
 	t_envs	*current;
 	int		i;
 
-	current = g_exe.envs;
+	current = g_exe.envs_list;
 	i = 0;
 	while (current->next != NULL)
 	{
