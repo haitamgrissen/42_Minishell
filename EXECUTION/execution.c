@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/03 11:29:37 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/04 10:02:34 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,15 +125,54 @@ int     main(int ac, char **av, char **env)
 //
 	t_cmd	*cmd;
 	cmd = malloc(sizeof(t_cmd));
-	cmd->cmd = "echo";
-	cmd->next = NULL;//malloc(sizeof(t_cmd));
-	// cmd->next->cmd = "cd";
-	// cmd->next->next = malloc(sizeof(t_cmd));
-	// cmd->next->next->cmd = "grep";
-	// cmd->next->next->next = NULL;
+	cmd->cmd = ft_strdup("cat");
+	cmd->args = ft_split("cat /dev/random", ' ');
+	cmd->next = malloc(sizeof(t_cmd));
+	cmd->next->cmd = ft_strdup("head");
+	cmd->next->args = ft_split("head -c 20", ' ');
+	cmd->next->next = malloc(sizeof(t_cmd));
+	cmd->next->next->cmd = ft_strdup("cat");
+	cmd->next->next->args = ft_split("cat", ' ');
+	cmd->next->next->next = NULL;
 
-	execute_pipe(cmd);
-
+	int pid;
+	int pipe_[2];
+	int p_out = 1;
+	int p_in = 0;
+	int status;
+	t_cmd *current;
+	current = cmd;
+	while(current->next != NULL)
+	{
+		pipe(pipe_);
+		p_out = pipe_[1];
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(p_out,1);
+			close(pipe_[1]);
+			dup2(p_in, 0);
+			close(pipe_[0]);
+			execute_cmd(current);
+		}
+		if (p_in > 2)
+			close(p_in);
+		p_in = pipe_[0];
+		close(p_out);
+		current = current->next;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(p_in,0);
+		close(p_in);
+		close(pipe_[1]);
+		execute_cmd(current);
+	}
+	close(pipe_[1]);
+	close(p_in);
+	while(waitpid(-1, &status, 0) > 0)
+		;
 	return 0;
 
 	
