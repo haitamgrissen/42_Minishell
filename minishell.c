@@ -6,101 +6,13 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/10/26 21:35:19 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/07 19:31:14 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include "EXECUTION/incs/execution.h"
 
-void ft_bzero(void *ptr)
-int escape(char *s, int pos)
-{
-    int i;
-    int c;
-    c = 0;
-    i = 0;
-    while(pos>=i)
-    {
-        if (s[pos] == '\\')
-            c++;
-        else
-            break;
-        pos--;
-    }
-    if (c%2 != 0)
-        return (1);
-    return (0);
-}
-void klawi(char *line, int *end, int *in, char **tmp)
-{
-    if ((*tmp = insi(line + 1, end , *line)))
-    {
-        *in = 1;
-        free(*tmp);
-    }
-}
-int is_quoted(char c)
-{
-    if (c == '\'' || c == '\"')
-        return (1);
-    else
-        return (0);
-}
-
-char *get_arguments(char *line, char c, int *pos)
-{
-    int i;
-    int end;
-    int in;
-    char *tmp[2];
-
-    i = 0;
-    in = 0;
-    ft_bzero(tmp, 2 * sizeof(char *));
-    while(line[i])
-    {
-        if((in = 0) && !escape(line, i - 1) && is_quoted(line[i]))
-        {
-            end = i + 1;
-            klawi(&line[i], &end, &in, &tmp[1]);
-        }
-        if (i + 1 == end)
-            in = 0;
-        if (line[i] == c && in == 0 && !escape(line, i - 1))
-        {
-            *pos += i;
-            break;
-        }
-        tmp[0] = append(tmp[0], line[i++]);
-    }
-    if (line[i] == '\0')
-        *pos += i -1;
-}
-char **parser_split(char *line, char c)
-{
-    int i;
-    int nbr;
-    char **split;
-    int j;
-    char *tmp;
-
-    i = 0;
-    j = 0;
-    nbr = parsing(line, c);
-    if (!(split = (char **)malloc(sizeof(char *) * (nbr + 1))))
-        return(NULL);
-    i = 0;
-    while(i < nbr)
-    {
-        tmp = get_arguments(line + j, c, &j);
-        split[i] = ft_strtrim(tmp, " \t");
-        free(tmp);
-        j++;
-        i++;
-    }
-    split[i] = NULL;
-    return (split);
-}
 
 char *ft_putstr(char *str)
 {
@@ -139,6 +51,111 @@ char * parse_second_arg(char *str)
     }
    return(tmp);
 }
+
+int	ft_count_words(char const *s, char c)
+{
+	int		i;
+	size_t	j;
+	int		compt1;
+	int		compt2;
+
+	compt2 = 0;
+	compt1 = 0;
+	j = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == '"' && compt2 == 0)
+			compt1++;
+		if (s[i] == '\'' && compt1 == 0)
+			compt2++;
+		if (((s[i] == c && s[i + 1] != c && s[i + 1]) || (i == 0 && s[i] != c))
+			&& (compt1 % 2 == 0) && (compt2 % 2 == 0))
+			j++;
+		i++;
+	}
+	if (j == 0)
+		j = 1;
+	return (j);
+}
+
+int	ft_lw(char const *s, char c, int i)
+{
+	size_t	j;
+	int		compt1;
+	int		compt2;
+
+	compt2 = 0;
+	compt1 = 0;
+	j = 0;
+	while ((s[i] != c && s[i] != '\0') || (compt1 == 1 && s[i] != '\0')
+		|| (compt2 == 1 && s[i] != '\0'))
+	{
+		if (s[i] == '"' && compt2 == 0)
+			compt1++;
+		if (s[i] == '\'' && compt1 == 0)
+			compt2++;
+		i++;
+		j++;
+		if (compt1 == 2)
+			compt1 = 0;
+		if (compt2 == 2)
+			compt2 = 0;
+	}
+	return (j);
+}
+
+void	*ft_free(char **s, int i)
+{
+	i = 0;
+	while (s[i] != 0)
+		free(s[i++]);
+	free(s);
+	return (0);
+}
+
+char	**boucle_help(char **str, char const *s, char c, int i)
+{
+	int	j;
+	int	compt1;
+	int	compt2;
+	int	k;
+
+	k = 0;
+	compt2 = 0;
+	compt1 = 0;
+	while (s[k] != '\0' && i < ft_count_words(s, c))
+	{
+		j = 0;
+		while (s[k] == c)
+			k++;
+		str[i] = (char *)malloc(sizeof(char) * ((ft_lw(s, c, k) + 1)));
+		while ((s[k] != c && s[k] != '\0') || (compt1 % 2 == 1 && s[k] != '\0')
+			|| (compt2 % 2 == 1 && s[k] != '\0'))
+		{
+			compt1 += (s[k] == '"' && compt2 % 2 == 0);
+			compt2 += (s[k] == '\'' && compt1 % 2 == 0);
+			str[i][j++] = s[k++];
+		}
+		str[i++][j] = '\0';
+	}
+	str[i] = 0;
+	return (str);
+}
+
+char	**split_pipe(char const *s, char c)
+{
+	char	**str;
+	int		i;
+
+	i = 0;
+	if (!s)
+		return (0);
+	str = (char **)malloc(sizeof(char *) * ((ft_count_words(s, c) + 1)));
+	str = boucle_help(str, s, c, i);
+	return (str);
+}
+
 char *take_second(char *str)
 {
     int i;
@@ -459,33 +476,339 @@ char    **split_quotes( char *s , char c) {
     }
     return tokens;
 }
+int quotes(char *str, char c, int i)
+{
+    while(str[i] != c && str[i] != '\0')
+        i++;
+    return (i + 1);
+}
+void split_command(t_cmd *shell)
+{
+    int i;
+    int len;
+    i = 0;
+    while(shell->cmd[i] != '\0' && shell->cmd[i] == ' ' && shell->cmd[i] == '\t')
+    {
+        if (shell->cmd[i] == '\'' || shell->cmd[i] == '"')
+            i = quotes(shell->cmd, shell->cmd[i], i);
+        else
+            i++;
+    }
+    len = ft_strlen(shell->cmd);
+    //printf("---->%d %d", i, len);
+}
 
+int count_tabs(char **tab)
+{
+    int i;
+    i = 0;
+    if (tab)
+    {
+        while(tab[i] != NULL)
+            i++;
+    }
+    return (i);
+}
+char **split_tabs(char **line)
+{
+    int i;
+    int j;
+    char **tmp;
+    i = 0;
+    tmp = (char **)malloc(sizeof(char *) * (count_tabs(line) +1));
+    while (line[i])
+    {
+        j = 0;
+        while(line[i][j] == ' ')
+            j++;
+        tmp[i] = ft_strdup(line[i] + j);
+        i++;
+    }
+    tmp[i] = 0;
+    return (tmp);
+    
+}
+int count_words(char *s, char c)
+{
+    int i;
+    int j;
+    int sgl;
+    int dbl;
+
+    i = 0;
+    j = 0;
+    sgl = 0;
+    dbl = 0;
+    while(s[i] != '\0')
+    {
+        if (s[i] == '\"' && sgl == 0)
+            dbl++;
+        if (s[i] == '\'' && dbl == 0)
+            sgl++;
+        if (((s[i] == c && s[i + 1] != c &&s[i + 1]) || (i == 0 && s[i] != c) )
+            && (dbl % 2 == 0) && (sgl % 2 == 0))
+                j++;
+            i++;
+    }
+    if (j==0)
+        j =1;
+    return (j);
+}
+int wod(char *s, char c , int i)
+{
+    int j;
+    int sgl;
+    int dbl;
+    sgl = 0;
+    dbl = 0;
+    j = 0;
+   while((s[i] != c && s[i] != '\0') || (dbl == 1 && s[i] != '\0')
+    || (sgl == 1 && s[i] != '\0'))
+    {
+        if (s[i] == '\"' && sgl == 0)
+            dbl++;
+        if(s[i] == '\'' && dbl == 0)
+            sgl++;
+        i++;
+        j++;
+        if (sgl == 2)
+            sgl = 0;
+        if (dbl == 2)
+            dbl = 0; 
+    }
+    return (j);
+}
+char **treat_it(char **str, char *s, char c, int i)
+{
+    int j;
+    int sgl;
+    int dbl;
+    int k;
+
+    k = 0;
+    sgl = 0;
+    dbl = 0;
+    while(s[k] != '\0' && i < count_words(s, c))
+    {
+        j = 0;
+        while(s[k] == c)
+            k++;
+        str[i] = (char *)malloc(sizeof(char) * ((wod(s,c,k) +1)));
+        while ((s[k] != c && s[k] != '\0') || (sgl % 2 == 1 && s[k] != '\0')
+        || (dbl % 2 == 1 && s[k] != '\0'))
+        {
+            dbl += (s[k] =='\"' && sgl % 2 == 0);
+            sgl += (s[k] == '\'' && dbl % 2 == 0);
+            str[i][j++] = s[k++];
+        }
+        str[i++][j] = '\0';
+    }
+    str[i] = 0;
+    return (str);
+}
+
+
+// t_cmd *next_input(t_cmd *shell, char **line)
+// {
+//     int i;
+
+//     i = 1;
+//     shell = shell->next;
+//     while(line[i])
+//     {
+//         shell = spaces(shell, line[0]);
+//         if (line[i + 1])
+//         {
+//             shell->next = (t_cmd *)malloc(sizeof(t_cmd));
+//             if (!shell->next)
+//                 return (NULL);
+//             shell = shell->next;
+//         }
+//         i++;
+//     }
+//     return (shell);
+// }
+
+char **split_pipes(char *s, char c)
+{
+    char **str;
+    int i;
+    
+    i = 0;
+    if (!s)
+        return(0);
+    str = (char **)malloc(sizeof(char *) * ((count_words(s,c) + 1)));
+    str = treat_it(str, s, c, i);
+    return (str);
+    
+}
+
+t_cmd *counting(t_cmd *shell, char *line)
+{
+    shell->red = (char **)malloc((sizeof(char *)) * (1024));
+    shell->tokens = (char **)malloc(sizeof(char *) * (1024));
+    return (shell);
+}
+int red_hell(t_cmd *shell, char **line, int i)
+{
+    while(line[shell->rdr.position][i] == '>' || line[shell->rdr.position][i] == '<')
+        i++;
+    while(line[shell->rdr.position][i] != '>' && line[shell->rdr.position][i] != '<' && line[shell->rdr.position][i] != '\0')
+        i++;
+    return (i);
+}
+char red_sign(char *line)
+{
+    char red;
+    int i;
+
+    i = 0;
+    red = 0;
+    i = ft_strlen(line);
+    if ((i == 1 || i == 2) && (line[1] == '<' || line[i] ==  '>'))
+    {
+        if (i == 1)
+        {
+            if (line[0] == '<')
+                red = '<';
+            else
+                red = '>';
+        }
+    }
+    return (red);
+}
+t_cmd *parsi_lia_red(t_cmd *shell, char *tab, int i)
+{
+    if (tab[0] != '>' && tab[0] != '<')
+        i = 0;
+   // shell->red[shell->ha]
+    return (shell);
+}
+t_cmd *parse_redirections(t_cmd *shell, char **tab, int i, int j)
+{
+    char *tmp;
+    char red;
+    while(tab[shell->rdr.position][i] != '\0')
+    {
+        red = red_sign(tab[shell->rdr.position]);
+        shell->rdr.position += (red != 0);
+        i = red_hell(shell, tab, i);
+        tmp = ft_substr(tab[shell->rdr.position], j, i - j);
+        if(!red)
+        {
+            red_sign(tmp);
+            if (red)
+            {
+                free(tmp);
+                shell->rdr.position++;
+                i = red_hell(shell, tab,0);
+                tmp = ft_substr(tab[shell->rdr.position],0,i);
+            }
+        }
+        shell = parsi_lia_red(shell, tmp, red);
+        if (tab[shell->rdr.position][i] != '\0')
+            j = i;
+    }
+    printf("\n---------->%d", shell->rdr.position);
+    printf("\n====->|%s|",tmp);
+    return (shell);
+}
+
+t_cmd *spaces(t_cmd *shell, char *tab)
+{
+    shell->rdr.position = 0;
+    // hna fin kayn lkhdma
+    char **split;
+    split = split_pipes(tab, ' ');
+    shell = counting(shell, tab);
+   while(split[shell->rdr.position][0] == '<' || split[shell->rdr.position][0] == '>')
+   {
+       shell = parse_redirections(shell, split, 0, 0);
+       shell->rdr.position++;
+   }
+   
+    return(shell);
+}
+
+
+// t_cmd *next_shell(t_cmd *shell, char **line)
+// {
+//     int i;
+
+//     i = 1;
+//     shell = shell->next;
+//     while(line[i])
+//     {
+//         shell = treat_it;
+//     }
+//}
+t_cmd *parse_this(char **line)
+{
+    t_cmd *shell;
+    t_cmd *tmp;
+    if (!line[0])
+        return (NULL);
+    shell = (t_cmd *)malloc(sizeof(t_cmd));
+    if (!shell)
+        return(NULL);
+    shell = spaces(shell, line[0]);
+    tmp = shell;
+    shell->next = (t_cmd *)malloc(sizeof(t_cmd));
+    if (!shell->next)
+        return (NULL);
+    if (!line[1])
+    {
+        shell->next = NULL;
+        return (shell);
+    }    
+    //shell = next_shell(shell, line);
+    shell = tmp;
+    return (shell);
+}
 int main(int ac, char **av, char **env)
 {
-    t_shell *sh;
+    t_cmd *shell;
+    
     hh = 0;
     char **line;
-    sh = malloc(sizeof(t_shell));
-    sh->str = (char*)malloc(sizeof(char) + 4);
+    shell = malloc(sizeof(t_shell));
+    shell->cmd = (char*)malloc(sizeof(char) + 4);
     while(1)
     {
-        sh->str = readline("Minishell $>: ");
-        if (sh->str == NULL)
+        shell->cmd = readline("Minishell $>: ");
+        if (shell->cmd == NULL)
         {
             ft_putstr("exit");
             exit(0);
         }
-        if (*sh->str == '\0')
+        if (*shell->cmd == '\0')
         {
             ft_putstr("Enter a command\n");
             continue;
         }
-        add_history(sh->str);
-       // start_shit(sh->str);
-        line = split_quotes(sh->str, ' ');
+        add_history(shell->cmd);
+        split_command(shell);
+        line = split_pipe(shell->cmd,'|');
+        line = split_tabs(line);
+        printf("-->|%s|\n",line[0]);
+        printf("-->|%s|\n",line[1]);
+        shell = parse_this(line);
+       // printf("\n=====|%s|------>\n" ,shell->args[0]);
+        //printf("\n=====|%s|------>\n" ,shell->args[1]);
+        //printf("\n=====|%s|------>\n" ,shell->args[2]);  
         
-        //parse(sh->str);
+        int j = 0;
+        int x = 0;
+       while(env[j])
+       {
+           x = 0;
+           while(env[j][x])
+            {
+                printf("%c",env[j][x]);
+                x++;
+            }
+            j++;
+       }
     }
- 
     return(0);
 }

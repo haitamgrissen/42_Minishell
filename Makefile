@@ -6,7 +6,7 @@
 #    By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/11 16:58:33 by sel-fcht          #+#    #+#              #
-#    Updated: 2021/10/24 15:23:51 by sel-fcht         ###   ########.fr        #
+#    Updated: 2021/11/07 19:24:10 by sel-fcht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ all: $(NAME)
 
 $(NAME):
 
-	gcc -lreadline $(LDFLAGS) $(CPPFLAGS) $(SRC) -g
+	gcc -lreadline $(LDFLAGS) $(CPPFLAGS) $(SRC) -g 
 
 clean:
 	rm -rf *.o

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/21 13:39:35 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/05 21:06:18 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef	struct		s_envs
 typedef struct				s_redirection
 {
 	int						type;
+	int						position;
 	char					*file;
 	struct s_redirection	*next;
 }							t_redirection;
@@ -37,9 +38,12 @@ typedef struct				s_redirection
 typedef struct 		s_cmd
 {
 	char			*cmd;
-	char			**args;
+	char 			**tokens;
+	char			**red;
+	char			**args; //args[0] = ls args[1] -al args[2] = |
 	int				args_count;
-	t_redirection	*rdr;
+	//t_redirection	*rdr;
+	struct s_redirection rdr;
 	struct s_cmd	*next;
 }					t_cmd;
 
