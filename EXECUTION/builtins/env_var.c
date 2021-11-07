@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/21 13:32:48 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:32:34 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_env(void)
 {
 	t_envs	*current;
 
-	current = g_exe.envs;
+	current = g_exe.envs_list;
 	while (current->next != NULL)
 	{
 		if (current->val != NULL)
@@ -31,7 +31,7 @@ t_envs	*getenv_node(char	*key)
 {
 	t_envs	*current;
 
-	current = g_exe.envs;
+	current = g_exe.envs_list;
 	while (current->next != NULL)
 	{
 		if (ft_strcmp(current->key, key) == 0)
@@ -90,7 +90,7 @@ void	init_envs(char **env)
 	int		i;
 
 	ret = (t_envs *)malloc(sizeof(t_envs));
-	g_exe.envs = ret;
+	g_exe.envs_list = ret;
 	ret->key = NULL;
 	ret->val = NULL;
 	split_env(ft_strdup(env[0]), &ret->key, &ret->val);

@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/21 13:23:41 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/02 09:32:55 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	print_export(void)
 {
 	t_envs	*current;
 
-	current = g_exe.envs;
+	current = g_exe.envs_list;
 	while (current && current->next)
 	{
 		if (current->val == NULL)
@@ -79,10 +79,12 @@ void	export(t_cmd *cmd)
 {
 	int	i;
 
+	if (cmd->args_count == 0)
+		print_export();
 	i = 0;
 	while (cmd->args[i])
 	{
-		add_node(g_exe.envs, cmd->args[i]);
+		add_node(g_exe.envs_list, cmd->args[i]);
 		i++;
 	}
 }

@@ -46,8 +46,11 @@ while (++i < nbcommands)
     pid = fork();
     if (pid == 0)
     {
+		dup2(fd[2 * i], 0);
         child_process(..., i);
     }
+	else 
+		waitpid(pid);
 }
 
 close(fddyal lpipe)
@@ -56,3 +59,48 @@ close(fddyal lpipe)
 
 
 execve
+
+char	*get_working_path(char	*command)
+{
+	char	*str;
+	char	**paths;
+	struct stat  buf;
+	int		ret;
+	
+	
+	paths = get_paths();
+	int i = 0;
+	while (paths[i])
+	{
+		str = ft_strdup(paths[i]);
+		str = ft_strjoin(str, ft_strdup("/"));
+		str = ft_strjoin(str, ft_strdup(command));
+		stat(str, &buf);
+		mode_t mode = buf.st_mode;
+			//printf("mode : %d\nstr : %s\n", mode & S_IXUSR, str);
+		if ((ret = open(str, O_RDONLY)) != -1)
+		{
+			return (str);
+		}
+		bzero(&buf, sizeof(buf));
+		i++;
+	}
+	str = ft_strdup(command);
+	stat(str, &buf);
+	mode_t mode = buf.st_mode;
+	if ((ret = open(str, O_RDONLY)) != -1)
+	{
+			printf("%s\n", str);
+			return str;
+	}
+	if (mode & S_IXUSR)
+	{
+		printf("mode : %d\nstr : %s\n", mode & S_IXUSR, str);
+		return (str);
+	}
+	else
+	{
+		printf("makina ta9lwa\n");
+		return (NULL);
+	}
+}
