@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/03 10:50:02 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/09 15:58:43 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <sys/stat.h>
 # include <string.h>
 # include <sys/wait.h>
+# include  <sys/errno.h>
 
 typedef struct s_envs
 {
@@ -28,6 +29,20 @@ typedef struct s_envs
 	struct s_envs	*next;
 	struct s_envs	*prev;
 }					t_envs;
+
+typedef struct s_pipes
+{
+	int		pid;
+	int		pipe_[2];
+	int		p_in;
+	int		p_out;
+	int		status;
+}			t_pipes;
+
+# define RDRIN 1
+# define RDROUT 2
+# define APPEND 3
+# define HEREDOC 4
 
 typedef struct s_redirection
 {
@@ -78,4 +93,5 @@ char		*get_working_path(char	*command);
 
 
 int		execute_pipe(t_cmd *cmd);
+void	execute_cmd(t_cmd *cmd);
 #endif

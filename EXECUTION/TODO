@@ -104,3 +104,107 @@ char	*get_working_path(char	*command)
 		return (NULL);
 	}
 }
+
+
+working Pipe but too long for norminette
+
+int	execute_pipe(t_cmd *cmd)
+{
+	int		pid;
+	int		pipe_[2];
+	int		p_out;
+	int		p_in;
+	int		status;
+	t_cmd	*current;
+
+	p_in = 0;
+	p_out = 1;
+	current = cmd;
+	while (current->next != NULL)
+	{
+		pipe(pipe_);
+		p_out = pipe_[1];
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(p_out, 1);
+			close(pipe_[1]);
+			dup2(p_in, 0);
+			close(pipe_[0]);
+			execute_cmd(current);
+		}
+		if (p_in > 2)
+			close(p_in);
+		p_in = pipe_[0];
+		close(p_out);
+		current = current->next;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(p_in, 0);
+		close(p_in);
+		close(pipe_[1]);
+		execute_cmd(current);
+	}
+	close(pipe_[1]);
+	close(p_in);
+	while (waitpid(-1, &status, 0) > 0)
+		;
+	return (0);
+}
+
+
+
+
+////last one
+
+int	execute_pipe(t_cmd *cmd)
+{
+	int		pid;
+	int		pipe_[2];
+	int		p_out;
+	int		p_in;
+	int		status;
+	t_cmd	*current;
+
+	p_in = 0;
+	p_out = 1;
+	current = cmd;
+	
+	
+	while (current->next != NULL)
+	{
+		pipe(pipe_);
+		p_out = pipe_[1];
+		pid = fork();
+		if (pid == 0)
+		{
+			dup2(p_out, 1);
+			close(pipe_[1]);
+			dup2(p_in, 0);
+			close(pipe_[0]);
+			execute_cmd(current);
+		}
+		if (p_in > 2)
+			close(p_in);
+		p_in = pipe_[0];
+		close(p_out);
+		current = current->next;
+	}
+	pid = fork();
+	if (pid == 0)
+	{
+		dup2(p_in, 0);
+		if(p_in != 0)
+			close(p_in);
+		execute_cmd(current);
+	}
+	if(pipe_[1] != 1)
+		close(pipe_[1]);
+	if(p_in != 0)
+		close(p_in);
+	while (waitpid(-1, &status, 0) > 0)
+		;
+	return (0);
+}

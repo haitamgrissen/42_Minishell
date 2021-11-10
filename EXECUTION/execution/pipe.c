@@ -6,110 +6,121 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/04 08:04:55 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/10 20:49:04 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/execution.h"
 
+int	redirect_file(t_redirection *rdr, int fd)
+{
+	int	tmp_fd;
 
-// void	exec_child(t_cmd *tmp)
-// {
-// 	if (tmp->args == NULL)
-// 		exit(0);
-// 	if (contain_slaches(tmp->args[0]) == 0)
-// 	{
-// 		if (isbuilt_in(tmp->args[0]))
-// 			exit(exec_builtin(tmp));
-// 		search_execute(tmp, g_exe.envs_arr);
-// 	}
-// 	if (tmp->args[0] != NULL)
-// 		execve(tmp->args[0], tmp->args, g_exe.envs_arr);
-// 	execve_error();
-// }
+	tmp_fd = fd; 
+	if (rdr->type == RDROUT || rdr->type == APPEND)
+		tmp_fd = dup2(fd, 1);
+	else
+		tmp_fd = dup2(fd, 0);
+	close(fd);
+	return (0);
+}
+int		create_file(t_redirection *rdr)
+{
+	int	fd;
 
-// int	fork_and_execute(t_cmd *cmd, int *fd)
-// {
-// 	int		i;
-// 	int		in;
-// 	t_cmd	*tmp;
-// 	int		pid;
+	if (rdr->type == RDRIN)
+		fd = open(rdr->file,  O_RDONLY, 0644);
+	else if (rdr->type == RDROUT)
+		fd = open(rdr->file, O_CREAT| O_WRONLY| O_TRUNC, 0644);
+	else if (rdr->type == APPEND)
+		fd = open(rdr->file, O_CREAT| O_WRONLY| O_APPEND, 0644);
+	else if (rdr->type == HEREDOC)
+		fd = 0;//remove
+	return (fd);
+}
+void	redirect(t_cmd *cmd, t_pipes *p)
+{
+	t_redirection	*current;
+	int				fd;
 
-// 	i = 0;
-// 	in = 0;
-// 	tmp = cmd;
-// 	while (tmp != NULL)
-// 	{
-// 		pipe(fd);
-// 		pid = fork();
-// 		if (pid == 0)
-// 		{
-// 			redirect_std_in_out(tmp, i, in, fd);
-// 			exec_child(tmp);
-// 		}
-// 		close(fd[1]);
-// 		if (i > 0)
-// 			close(in);
-// 		in = fd[0];
-// 		tmp = tmp->next;
-// 		i++;
-// 	}
-// 	return (pid);
-// }
+	current = cmd->rdr;
+	while (current != NULL)
+	{
+		fd = create_file(current);
+		if (fd == -1)
+		{
+			write(2, "MINI: ", 6);
+			write(2, strerror(errno), ft_strlen( strerror(errno)));
+			write(2, "\n", 1);
+			exit(0);
+			return ;
+		}
+		redirect_file(current, fd);
+		current = current->next;
+	}
+	return ;
+}
 
-// int	exec_nested_cmd(t_cmd *cmd)
-// {
-// 	int		*fd;
-// 	int		status;
-// 	pid_t	pid;
+void	for_cmds(t_cmd *cmd, t_pipes *p)
+{
+	pipe(p->pipe_);
+	p->p_out = p->pipe_[1];
+	p->pid = fork();
+	if (p->pid == 0)
+	{
+		dup2(p->p_out, 1);
+		close(p->pipe_[1]);
+		dup2(p->p_in, 0);
+		close(p->pipe_[0]);
+		redirect(cmd, p);
+		execute_cmd(cmd);
+	}
+	if (p->p_in > 2)
+		close(p->p_in);
+	p->p_in = p->pipe_[0];
+	close(p->p_out);
+}
 
-// 	status = 0;
-// 	fd = (int *)malloc(sizeof(int) * 2);
-// 	pid = fork_and_execute(cmd, fd);
-// 	waitpid(pid, &status, 0);
-// 	while (wait(NULL) > 0)
-// 		;
-// 	free(fd);
-// 	return (0);//get exit status
-// }
+void	last_cmd(t_cmd *cmd, t_pipes *p)
+{
+	p->pid = fork();
+	if (p->pid == 0)
+	{
+		dup2(p->p_in, 0);
+		if (p->p_in != 0)
+			close(p->p_in);
+		redirect(cmd, p);
+		execute_cmd(cmd);
+	}
+	if (p->pipe_[1] != 1)
+		close(p->pipe_[1]);
+	if (p->p_in != 0)
+		close(p->p_in);
+}
 
+void	_cmd(t_cmd *cmd, t_pipes *p)
+{
+	redirect(cmd, p);
+	execute_cmd(cmd);
+}
 
-// int	execute_pipe(t_cmd *cmd)
-// {
-// 	t_cmd	*current;
+int	execute_pipe(t_cmd *cmd)
+{
+	t_cmd	*current;
+	t_pipes	p;
 
-// 	current = cmd;
-// 	while (current->next != NULL)
-// 	{
-// 		printf("%s\n", current->cmd);
-// 		current = current->next;
-// 	}
-// 	printf("%s\n", current->cmd);
-
-// 	return 0;
-// 	// int		fd[2];
-// 	// pid_t	pid;
-// 	// int		sta;
-// 	// t_cmd	*current;
-
-// 	// current = cmd;
-// 	// while (cmd->next != NULL)
-// 	// {
-// 	// 	pid = fork();
-// 	// 	if (pid == 0)
-// 	// 	{
-// 	// 		dup2(fd[1], 0);
-// 	// 		execute_child(cmd);
-// 	// 	}
-// 	// 	current = current->next;
-// 	// }
-// 	// pid = fork();
-// 	// if (pid == 0)
-// 	// {
-// 	// 	dup2(fd[1], 0);
-// 	// 	execute_child(cmd);
-// 	// }
-// 	// else
-// 	// 	waitpid(pid, NULL, 0);
-// 	// return 0;
-// }
+	p.p_in = dup(0);
+	p.p_out = dup(1);
+	current = cmd;
+	while (current)
+	{
+		if (current->next)
+			for_cmds(current, &p);
+		else
+			last_cmd(current, &p);
+		current = current->next;
+	}
+	while (waitpid(-1, &p.status, 0) > 0)
+		;
+	return (0);
+}
