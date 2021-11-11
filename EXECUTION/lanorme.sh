@@ -1,0 +1,1 @@
+norminette builtins/cd.c builtins/echo.c builtins/env_utils.c builtins/env_var.c builtins/exit.c builtins/export.c builtins/pwd.c builtins/unset.c execution/paths.c execution/pipe.c execution/redirections.c incs/builtins.h incs/execution.h

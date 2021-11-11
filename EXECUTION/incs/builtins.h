@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:49:26 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/30 10:33:08 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:31:00 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		pwd(void);
 void		cd(t_cmd *cmd);
 void		echo(t_cmd	*cmd);
 
-void		exit_builtin(void);
+void		exit_builtin(t_cmd *cmd);
 
 t_envs		*getenv_node(char *key);
 /*
@@ -45,5 +45,6 @@ int			split_env(char *f, char **key, char **val);
 void		unset(t_cmd *cmd);
 void		export(t_cmd *cmd);
 char		**env_to_arr(void);
+char		*getenv_val(char *key);
 
 #endif

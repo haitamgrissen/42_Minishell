@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 04:02:22 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:51:11 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,44 @@ void	last_cmd(t_cmd *cmd, t_pipes *p)
 		close(p->p_in);
 }
 
-void	_cmd(t_cmd *cmd, t_pipes *p)
+void	close_herdocs(t_cmd *cmd)
 {
-	redirect(cmd, p);
-	execute_cmd(cmd);
+	t_cmd			*current;
+	t_redirection	*cur_rdr;
+	char			*f;
+
+	current = cmd;
+	while (current != NULL)
+	{
+		cur_rdr = current->rdr;
+		while (cur_rdr != NULL)
+		{
+			if (cur_rdr->type == HEREDOC)
+			{
+				f = ft_strjoin(strdup("/tmp/file"), ft_itoa(cur_rdr->index));
+				unlink(f);
+				free(f);
+				close(cur_rdr->fd);
+			}
+			cur_rdr = cur_rdr->next;
+		}
+		current = current->next;
+	}
+}
+
+void	waiting_sigs(t_pipes *p)
+{
+	while (waitpid(-1, &p->status, 0) > 0)
+	{
+		if (WIFEXITED(p->status))
+			g_exe.ret = WEXITSTATUS(p->status);
+		else if (WIFSIGNALED(p->status))
+		{
+			if (WTERMSIG(p->status) == SIGQUIT)
+				ft_putstr_fd("\\Quit: 3", 2);
+			g_exe.ret = WTERMSIG(p->status) + 128;
+		}
+	}
 }
 
 int	execute_pipe(t_cmd *cmd)
@@ -63,6 +97,7 @@ int	execute_pipe(t_cmd *cmd)
 	p.p_in = dup(0);
 	p.p_out = dup(1);
 	current = cmd;
+	herdocs(cmd);
 	while (current)
 	{
 		if (current->next)
@@ -71,7 +106,7 @@ int	execute_pipe(t_cmd *cmd)
 			last_cmd(current, &p);
 		current = current->next;
 	}
-	while (waitpid(-1, &p.status, 0) > 0)
-		;
+	waiting_sigs(&p);
+	close_herdocs(cmd);
 	return (0);
 }

@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   exapnsion.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/19 14:42:08 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:20:55 by hgrissen         ###   ########.fr       */
+/*   Created: 2021/11/11 10:00:58 by hgrissen          #+#    #+#             */
+/*   Updated: 2021/11/11 10:33:58 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/builtins.h"
+#include "./incs/builtins.h"
 
-void	exit_builtin(t_cmd	*cmd)
+char	*getenv_val(char *key)
 {
-	int	i;
+	t_envs	*node;
 
-	i = 0;
-	while (cmd->args[i])
-		i++;
-	if (i == 1)
-		exit(g_exe.ret);
-	else if (i == 2)
-		exit(atoi(cmd->args[1]));
+	node = getenv_node(key);
+	if (node != NULL)
+		return (ft_strdup(node->val));
+	else
+		return (NULL);
 }
+

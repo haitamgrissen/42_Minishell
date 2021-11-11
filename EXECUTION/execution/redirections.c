@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 23:53:50 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 03:23:03 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:49:00 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ int	open_herdoc(t_redirection *rdr)
 	char	*doc;
 	char	*str;
 
-	doc = ft_strjoin(strdup("/tmp/file"), strdup(ft_itoa(rdr->index)));
+	doc = ft_strjoin(strdup("/tmp/file"), ft_itoa(rdr->index));
 	fd = open(doc, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	while (1)
 	{
 		str = readline("> ");
+		if (!str)
+			break ;
 		if (ft_strcmp(rdr->file, str) == 0)
 		{
 			free(str);
@@ -53,6 +55,7 @@ int	open_herdoc(t_redirection *rdr)
 	}
 	close(fd);
 	fd = open(doc, O_RDONLY, 0644);
+	free(doc);
 	return (fd);
 }
 
@@ -60,14 +63,13 @@ int	create_file(t_redirection *rdr)
 {
 	int	fd;
 
+	fd = -1;
 	if (rdr->type == RDRIN)
 		fd = open(rdr->file, O_RDONLY, 0644);
 	else if (rdr->type == RDROUT)
 		fd = open(rdr->file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (rdr->type == APPEND)
 		fd = open(rdr->file, O_CREAT | O_WRONLY | O_APPEND, 0644);
-	else if (rdr->type == HEREDOC)
-		fd = open_herdoc(rdr);
 	return (fd);
 }
 
@@ -75,14 +77,12 @@ void	redirect(t_cmd *cmd, t_pipes *p)
 {
 	t_redirection	*current;
 	int				fd;
-	int				i;
 
 	current = cmd->rdr;
-	i = 0;
 	while (current != NULL)
 	{
-		current->index = i++;
-		current->fd = create_file(current);
+		if (current->type != HEREDOC)
+			current->fd = create_file(current);
 		if (current->fd == -1)
 		{
 			write(2, "MINI: ", 6);
@@ -94,4 +94,28 @@ void	redirect(t_cmd *cmd, t_pipes *p)
 		current = current->next;
 	}
 	redirect_file(cmd->rdr);
+}
+
+void	herdocs(t_cmd *cmd)
+{
+	t_cmd			*current;
+	t_redirection	*cur_rdr;
+	int				i;
+
+	current = cmd;
+	i = 0;
+	while (current != NULL)
+	{
+		cur_rdr = current->rdr;
+		while (cur_rdr != NULL)
+		{
+			if (cur_rdr->type == HEREDOC)
+			{
+				cur_rdr->index = i++;
+				cur_rdr->fd = open_herdoc(cur_rdr);
+			}
+			cur_rdr = cur_rdr->next;
+		}
+		current = current->next;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 04:02:48 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 10:47:18 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	execute_builtin(t_cmd *cmd)
 	else if (!ft_strcmp(cmd->cmd, UNSET))
 		unset(cmd);
 	else if (!ft_strcmp(cmd->cmd, EXIT))
-		exit_builtin();
+		exit_builtin(cmd);
 }
 
 void	execute_cmd(t_cmd *cmd)
@@ -121,9 +121,6 @@ void	execute_cmd(t_cmd *cmd)
 
 int     main(int ac, char **av, char **env)
 {
-	
-	
-	
 	init_envs(env);
 
 
@@ -133,7 +130,7 @@ int     main(int ac, char **av, char **env)
 	cmd->cmd = ft_strdup("cat");
 	cmd->args = ft_split("cat", ' ');
 
-	//cmd->rdr = NULL;
+	cmd->rdr = NULL;
 	cmd->rdr = malloc(sizeof(t_redirection));
 	cmd->rdr->type = RDRIN;
 	cmd->rdr->file = ft_strdup("hello");
@@ -188,8 +185,8 @@ int     main(int ac, char **av, char **env)
 
 	execute_pipe(cmd);
 
-
-	
+	system("leaks hada");
+	//while (1);
 //char	*str = get_working_path(av[1]);
 	// g_exe.envs_arr = env_to_arr();
 	
