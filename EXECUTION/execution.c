@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/10 21:48:21 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 03:18:31 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,24 +135,26 @@ int     main(int ac, char **av, char **env)
 	cmd->rdr = malloc(sizeof(t_redirection));
 	cmd->rdr->type = RDRIN;
 	cmd->rdr->file = ft_strdup("hello");
+
 	cmd->rdr->next = malloc(sizeof(t_redirection));
 	cmd->rdr->next->type = RDROUT;
 	cmd->rdr->next->file = ft_strdup("Nor");
+
 	cmd->rdr->next->next = malloc(sizeof(t_redirection));
-	cmd->rdr->next->next->type = APPEND;
+	cmd->rdr->next->next->type = HEREDOC;
 	cmd->rdr->next->next->file = ft_strdup("Nor1");
+
 	cmd->rdr->next->next->next = malloc(sizeof(t_redirection));
-	cmd->rdr->next->next->next->type = RDRIN;
+	cmd->rdr->next->next->next->type = HEREDOC;
 	cmd->rdr->next->next->next->file = ft_strdup("Nizar");
 	cmd->rdr->next->next->next->next = NULL;
-	//printf("");
-	//printf("%s", cmd->rdr->file);
-	// cmd->next = NULL;
-	// execute_pipe(cmd);
-	// system("leaks a.out");
 
-	// return 0;
-	// return 0;
+	cmd->next = NULL;
+
+
+	execute_pipe(cmd);
+	return 0;
+
 
 	
 	cmd->next = malloc(sizeof(t_cmd));

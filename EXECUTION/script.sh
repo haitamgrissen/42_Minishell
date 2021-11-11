@@ -1,1 +1,1 @@
-gcc */*.c *.c
+gcc -L /goinfre/hgrissen/hgrissen/.brew/opt/readline/lib -I /goinfre/hgrissen/hgrissen/.brew/opt/readline/include -lreadline */*.c *.c -o hada

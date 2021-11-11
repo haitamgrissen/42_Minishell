@@ -6,60 +6,11 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/10 20:49:04 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 03:23:19 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/execution.h"
-
-int	redirect_file(t_redirection *rdr, int fd)
-{
-	int	tmp_fd;
-
-	tmp_fd = fd; 
-	if (rdr->type == RDROUT || rdr->type == APPEND)
-		tmp_fd = dup2(fd, 1);
-	else
-		tmp_fd = dup2(fd, 0);
-	close(fd);
-	return (0);
-}
-int		create_file(t_redirection *rdr)
-{
-	int	fd;
-
-	if (rdr->type == RDRIN)
-		fd = open(rdr->file,  O_RDONLY, 0644);
-	else if (rdr->type == RDROUT)
-		fd = open(rdr->file, O_CREAT| O_WRONLY| O_TRUNC, 0644);
-	else if (rdr->type == APPEND)
-		fd = open(rdr->file, O_CREAT| O_WRONLY| O_APPEND, 0644);
-	else if (rdr->type == HEREDOC)
-		fd = 0;//remove
-	return (fd);
-}
-void	redirect(t_cmd *cmd, t_pipes *p)
-{
-	t_redirection	*current;
-	int				fd;
-
-	current = cmd->rdr;
-	while (current != NULL)
-	{
-		fd = create_file(current);
-		if (fd == -1)
-		{
-			write(2, "MINI: ", 6);
-			write(2, strerror(errno), ft_strlen( strerror(errno)));
-			write(2, "\n", 1);
-			exit(0);
-			return ;
-		}
-		redirect_file(current, fd);
-		current = current->next;
-	}
-	return ;
-}
 
 void	for_cmds(t_cmd *cmd, t_pipes *p)
 {
@@ -120,7 +71,7 @@ int	execute_pipe(t_cmd *cmd)
 			last_cmd(current, &p);
 		current = current->next;
 	}
-	while (waitpid(-1, &p.status, 0) > 0)
+	while (waitpid(p.pid, &p.status, 0) > 0)
 		;
 	return (0);
 }
