@@ -5,8 +5,13 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
+<<<<<<< HEAD
 /*   Created: 2021/11/10 22:01:03 by sel-fcht          #+#    #+#             */
 /*   Updated: 2021/11/10 22:01:04 by sel-fcht         ###   ########.fr       */
+=======
+/*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
+/*   Updated: 2021/11/11 03:20:08 by hgrissen         ###   ########.fr       */
+>>>>>>> 01fd011322b119fee08639b515d23ef1dd789925
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +28,8 @@
 # include <sys/wait.h>
 # include  <sys/errno.h>
 
+# include <readline/readline.h>
+# include <readline/history.h>
 typedef struct s_envs
 {
 	char			*key;
@@ -50,6 +57,8 @@ typedef struct s_redirection
 	int						type;
 	int						position;
 	char					*file;
+	int						index;
+	int						fd;
 	struct s_redirection	*next;
 }							t_redirection;
 
@@ -93,10 +102,16 @@ int			ft_strcmp(char *s1, char *s2);
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);
+char		*ft_itoa(int n);
+void		ft_putstr_fd(char *s, int fd);
+
 char		*get_working_path(char	*command);
 
 
 
 int		execute_pipe(t_cmd *cmd);
 void	execute_cmd(t_cmd *cmd);
+
+
+void	redirect(t_cmd *cmd, t_pipes *p);
 #endif
