@@ -6,7 +6,7 @@
 #    By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/11 16:58:33 by sel-fcht          #+#    #+#              #
-#    Updated: 2021/11/07 19:24:10 by sel-fcht         ###   ########.fr        #
+#    Updated: 2021/11/09 17:08:41 by sel-fcht         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,17 +15,17 @@ SRC = minishell.c\
 	  split.c\
 	  get_next_line.c\
 	  gnl_outils.c\
-	  parsing.c
+	  parsing.c\
+	  
 NAME = minishell
 
 LDFLAGS=-L/Users/sel-fcht/.brew/opt/readline/lib
 CPPFLAGS=-I/Users/sel-fcht/.brew/opt/readline/include
 
-all: $(NAME)
+all	:	$(NAME)
 
-$(NAME):
-
-	gcc -lreadline $(LDFLAGS) $(CPPFLAGS) $(SRC) -g 
+$(NAME)	:	$(SRC)
+	gcc  -lreadline $(LDFLAGS) $(CPPFLAGS)  $(SRC)
 
 clean:
 	rm -rf *.o

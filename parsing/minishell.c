@@ -6,12 +6,12 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/11/07 19:31:14 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/11 04:22:12 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "EXECUTION/incs/execution.h"
+#include "../EXECUTION/incs/execution.h"
 
 
 char *ft_putstr(char *str)
@@ -643,128 +643,7 @@ char **split_pipes(char *s, char c)
     
 }
 
-t_cmd *counting(t_cmd *shell, char *line)
-{
-    shell->red = (char **)malloc((sizeof(char *)) * (1024));
-    shell->tokens = (char **)malloc(sizeof(char *) * (1024));
-    return (shell);
-}
-int red_hell(t_cmd *shell, char **line, int i)
-{
-    while(line[shell->rdr.position][i] == '>' || line[shell->rdr.position][i] == '<')
-        i++;
-    while(line[shell->rdr.position][i] != '>' && line[shell->rdr.position][i] != '<' && line[shell->rdr.position][i] != '\0')
-        i++;
-    return (i);
-}
-char red_sign(char *line)
-{
-    char red;
-    int i;
 
-    i = 0;
-    red = 0;
-    i = ft_strlen(line);
-    if ((i == 1 || i == 2) && (line[1] == '<' || line[i] ==  '>'))
-    {
-        if (i == 1)
-        {
-            if (line[0] == '<')
-                red = '<';
-            else
-                red = '>';
-        }
-    }
-    return (red);
-}
-t_cmd *parsi_lia_red(t_cmd *shell, char *tab, int i)
-{
-    if (tab[0] != '>' && tab[0] != '<')
-        i = 0;
-   // shell->red[shell->ha]
-    return (shell);
-}
-t_cmd *parse_redirections(t_cmd *shell, char **tab, int i, int j)
-{
-    char *tmp;
-    char red;
-    while(tab[shell->rdr.position][i] != '\0')
-    {
-        red = red_sign(tab[shell->rdr.position]);
-        shell->rdr.position += (red != 0);
-        i = red_hell(shell, tab, i);
-        tmp = ft_substr(tab[shell->rdr.position], j, i - j);
-        if(!red)
-        {
-            red_sign(tmp);
-            if (red)
-            {
-                free(tmp);
-                shell->rdr.position++;
-                i = red_hell(shell, tab,0);
-                tmp = ft_substr(tab[shell->rdr.position],0,i);
-            }
-        }
-        shell = parsi_lia_red(shell, tmp, red);
-        if (tab[shell->rdr.position][i] != '\0')
-            j = i;
-    }
-    printf("\n---------->%d", shell->rdr.position);
-    printf("\n====->|%s|",tmp);
-    return (shell);
-}
-
-t_cmd *spaces(t_cmd *shell, char *tab)
-{
-    shell->rdr.position = 0;
-    // hna fin kayn lkhdma
-    char **split;
-    split = split_pipes(tab, ' ');
-    shell = counting(shell, tab);
-   while(split[shell->rdr.position][0] == '<' || split[shell->rdr.position][0] == '>')
-   {
-       shell = parse_redirections(shell, split, 0, 0);
-       shell->rdr.position++;
-   }
-   
-    return(shell);
-}
-
-
-// t_cmd *next_shell(t_cmd *shell, char **line)
-// {
-//     int i;
-
-//     i = 1;
-//     shell = shell->next;
-//     while(line[i])
-//     {
-//         shell = treat_it;
-//     }
-//}
-t_cmd *parse_this(char **line)
-{
-    t_cmd *shell;
-    t_cmd *tmp;
-    if (!line[0])
-        return (NULL);
-    shell = (t_cmd *)malloc(sizeof(t_cmd));
-    if (!shell)
-        return(NULL);
-    shell = spaces(shell, line[0]);
-    tmp = shell;
-    shell->next = (t_cmd *)malloc(sizeof(t_cmd));
-    if (!shell->next)
-        return (NULL);
-    if (!line[1])
-    {
-        shell->next = NULL;
-        return (shell);
-    }    
-    //shell = next_shell(shell, line);
-    shell = tmp;
-    return (shell);
-}
 int main(int ac, char **av, char **env)
 {
     t_cmd *shell;
@@ -790,25 +669,16 @@ int main(int ac, char **av, char **env)
         split_command(shell);
         line = split_pipe(shell->cmd,'|');
         line = split_tabs(line);
-        printf("-->|%s|\n",line[0]);
-        printf("-->|%s|\n",line[1]);
-        shell = parse_this(line);
+        shell->tokens = line;
+        //return 0;
+        //printf("-->|%s|\n",line[3]);
+      //  shell = parse_this(line);
        // printf("\n=====|%s|------>\n" ,shell->args[0]);
         //printf("\n=====|%s|------>\n" ,shell->args[1]);
         //printf("\n=====|%s|------>\n" ,shell->args[2]);  
         
         int j = 0;
         int x = 0;
-       while(env[j])
-       {
-           x = 0;
-           while(env[j][x])
-            {
-                printf("%c",env[j][x]);
-                x++;
-            }
-            j++;
-       }
     }
     return(0);
 }

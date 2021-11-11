@@ -5,14 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2021/11/05 21:06:18 by sel-fcht         ###   ########.fr       */
-=======
-/*   Updated: 2021/11/03 10:50:02 by hgrissen         ###   ########.fr       */
->>>>>>> ef3f3f58611790caddfb687daf75300b39b8ffe0
+/*   Created: 2021/11/10 22:01:03 by sel-fcht          #+#    #+#             */
+/*   Updated: 2021/11/10 22:01:04 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
@@ -24,6 +21,7 @@
 # include <sys/stat.h>
 # include <string.h>
 # include <sys/wait.h>
+# include  <sys/errno.h>
 
 typedef struct s_envs
 {
@@ -32,6 +30,20 @@ typedef struct s_envs
 	struct s_envs	*next;
 	struct s_envs	*prev;
 }					t_envs;
+
+typedef struct s_pipes
+{
+	int		pid;
+	int		pipe_[2];
+	int		p_in;
+	int		p_out;
+	int		status;
+}			t_pipes;
+
+# define RDRIN 1 // < // ls -al | cat > file1 > file2 >> file3 << ok
+# define RDROUT 2 // >
+# define APPEND 3 // >>
+# define HEREDOC 4 // << 
 
 typedef struct s_redirection
 {
@@ -86,4 +98,5 @@ char		*get_working_path(char	*command);
 
 
 int		execute_pipe(t_cmd *cmd);
+void	execute_cmd(t_cmd *cmd);
 #endif
