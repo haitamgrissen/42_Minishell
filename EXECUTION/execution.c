@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 03:18:31 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 04:02:48 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ void	execute_builtin(t_cmd *cmd)
 
 void	execute_cmd(t_cmd *cmd)
 {
+	if (cmd == NULL)
+		exit(0);
 	if (is_builtin(cmd->cmd))
 		execute_builtin(cmd);
 	else
@@ -149,17 +151,35 @@ int     main(int ac, char **av, char **env)
 	cmd->rdr->next->next->next->file = ft_strdup("Nizar");
 	cmd->rdr->next->next->next->next = NULL;
 
-	cmd->next = NULL;
+	// cmd->next = NULL;
 
 
-	execute_pipe(cmd);
-	return 0;
+	// execute_pipe(cmd);
+	// return 0;
 
 
 	
 	cmd->next = malloc(sizeof(t_cmd));
 	cmd->next->cmd = ft_strdup("cat");
 	cmd->next->args = ft_split("cat", ' ');
+
+	cmd->next->rdr = malloc(sizeof(t_redirection));
+	cmd->next->rdr->type = RDRIN;
+	cmd->next->rdr->file = ft_strdup("hello");
+
+	cmd->next->rdr->next = malloc(sizeof(t_redirection));
+	cmd->next->rdr->next->type = RDROUT;
+	cmd->next->rdr->next->file = ft_strdup("Norr");
+
+	cmd->next->rdr->next->next = malloc(sizeof(t_redirection));
+	cmd->next->rdr->next->next->type = HEREDOC;
+	cmd->next->rdr->next->next->file = ft_strdup("Nor2");
+
+	cmd->next->rdr->next->next->next = malloc(sizeof(t_redirection));
+	cmd->next->rdr->next->next->next->type = HEREDOC;
+	cmd->next->rdr->next->next->next->file = ft_strdup("Nizar1");
+	cmd->next->rdr->next->next->next->next = NULL;
+	
 	cmd->next->next = malloc(sizeof(t_cmd));
 	cmd->next->next->cmd = ft_strdup("ls");
 	cmd->next->next->args = ft_split("ls", ' ');

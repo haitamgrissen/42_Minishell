@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/26 16:15:26 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/11/11 04:22:12 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/11 05:26:00 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char *ft_putstr(char *str)
     return (str);
 }
 
-char * parse_second_arg(char *str)
+char *parse_second_arg(char *str)
 {
     int i;
     int j = 0;
@@ -385,8 +385,7 @@ char    *get_inquotes(char *line, int *pos, int *insgl, int *indbl, char c) {
     char *t = NULL;
     int a = *insgl;
     int b = *indbl;
-    
-    
+
     i = 0;
     while (line[i] != '\0') {
         
@@ -482,19 +481,19 @@ int quotes(char *str, char c, int i)
         i++;
     return (i + 1);
 }
-void split_command(t_cmd *shell)
+void split_command(t_parser  *prsr)
 {
     int i;
     int len;
     i = 0;
-    while(shell->cmd[i] != '\0' && shell->cmd[i] == ' ' && shell->cmd[i] == '\t')
+    while(prsr->line[i] != '\0' && prsr->line[i] == ' ' && prsr->line[i] == '\t')
     {
-        if (shell->cmd[i] == '\'' || shell->cmd[i] == '"')
-            i = quotes(shell->cmd, shell->cmd[i], i);
+        if (prsr->line[i] == '\'' || prsr->line[i] == '"')
+            i = quotes(prsr->line, prsr->line[i], i);
         else
             i++;
     }
-    len = ft_strlen(shell->cmd);
+    len = ft_strlen(prsr->line);
     //printf("---->%d %d", i, len);
 }
 
@@ -644,38 +643,51 @@ char **split_pipes(char *s, char c)
 }
 
 
+int     tokenizer(t_parser *prsr)
+{
+    int i;
+    
+    g_exe.cmd = malloc(sizeof(t_cmd));
+    return (0);
+}
+
 int main(int ac, char **av, char **env)
 {
-    t_cmd *shell;
+    t_cmd       *shell;
+    t_parser    *prsr;
     
     hh = 0;
     char **line;
-    shell = malloc(sizeof(t_shell));
-    shell->cmd = (char*)malloc(sizeof(char) + 4);
+    prsr = malloc(sizeof(t_parser));
+    prsr->line = (char*)malloc(sizeof(char) + 4);
+
     while(1)
     {
-        shell->cmd = readline("Minishell $>: ");
-        if (shell->cmd == NULL)
+        prsr->line = readline("Minishell $>: ");
+        if (prsr->line == NULL)
         {
             ft_putstr("exit");
             exit(0);
         }
-        if (*shell->cmd == '\0')
+        if (*prsr->line == '\0')
         {
-            ft_putstr("Enter a command\n");
+            //ft_putstr("Enter a command\n");
             continue;
         }
-        add_history(shell->cmd);
-        split_command(shell);
-        line = split_pipe(shell->cmd,'|');
+        add_history(prsr->line);
+        split_command(prsr);
+        line = split_pipe(prsr->line,'|');
         line = split_tabs(line);
-        shell->tokens = line;
-        //return 0;
-        //printf("-->|%s|\n",line[3]);
-      //  shell = parse_this(line);
-       // printf("\n=====|%s|------>\n" ,shell->args[0]);
+        prsr->commands = line;
+
+        int i = 0;
+        while(prsr->commands[i])
+        {
+            printf("\n=====|%s|------>\n" ,prsr->commands[i++]);
+        }
         //printf("\n=====|%s|------>\n" ,shell->args[1]);
         //printf("\n=====|%s|------>\n" ,shell->args[2]);  
+        //system("leaks a.out");
         
         int j = 0;
         int x = 0;

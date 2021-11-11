@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 03:23:19 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 04:02:22 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ int	execute_pipe(t_cmd *cmd)
 			last_cmd(current, &p);
 		current = current->next;
 	}
-	while (waitpid(p.pid, &p.status, 0) > 0)
+	while (waitpid(-1, &p.status, 0) > 0)
 		;
 	return (0);
 }

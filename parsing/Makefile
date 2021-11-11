@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+         #
+#    By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/11 16:58:33 by sel-fcht          #+#    #+#              #
-#    Updated: 2021/11/09 17:08:41 by sel-fcht         ###   ########.fr        #
+#    Updated: 2021/11/11 05:07:06 by hgrissen         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,8 @@ SRC = minishell.c\
 	  
 NAME = minishell
 
-LDFLAGS=-L/Users/sel-fcht/.brew/opt/readline/lib
-CPPFLAGS=-I/Users/sel-fcht/.brew/opt/readline/include
+LDFLAGS=-L /goinfre/hgrissen/hgrissen/.brew/opt/readline/lib
+CPPFLAGS=-I /goinfre/hgrissen/hgrissen/.brew/opt/readline/include
 
 all	:	$(NAME)
 

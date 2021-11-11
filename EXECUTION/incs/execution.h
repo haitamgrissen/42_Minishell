@@ -3,18 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-<<<<<<< HEAD
-/*   Created: 2021/11/10 22:01:03 by sel-fcht          #+#    #+#             */
-/*   Updated: 2021/11/10 22:01:04 by sel-fcht         ###   ########.fr       */
-=======
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
 /*   Updated: 2021/11/11 03:20:08 by hgrissen         ###   ########.fr       */
->>>>>>> 01fd011322b119fee08639b515d23ef1dd789925
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef EXECUTION_H
 # define EXECUTION_H
@@ -47,15 +41,14 @@ typedef struct s_pipes
 	int		status;
 }			t_pipes;
 
-# define RDRIN 1 // < // ls -al | cat > file1 > file2 >> file3 << ok
-# define RDROUT 2 // >
-# define APPEND 3 // >>
-# define HEREDOC 4 // << 
+# define RDRIN 1
+# define RDROUT 2
+# define APPEND 3
+# define HEREDOC 4
 
 typedef struct s_redirection
 {
 	int						type;
-	int						position;
 	char					*file;
 	int						index;
 	int						fd;
@@ -65,12 +58,9 @@ typedef struct s_redirection
 typedef struct s_cmd
 {
 	char			*cmd;
-	char 			**tokens;
-	char			**red;
-	char			**args; //args[0] = ls args[1] -al args[2] = |
+	char			**args;
 	int				args_count;
-	//t_redirection	*rdr;
-	struct s_redirection rdr;
+	t_redirection	*rdr;
 	struct s_cmd	*next;
 }					t_cmd;
 

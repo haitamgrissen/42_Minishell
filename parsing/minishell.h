@@ -29,26 +29,14 @@ typedef struct s_quotes
     int dbl;
 }      t_quotes;
 
-typedef struct s_command
-{
-    char **tokens;
-    char **in;
-    char **out;
-}   t_command;
 
-typedef struct s_pipeline
-{
-    t_command **cmds;
-    int nbr_of_commands;
 
-}   t_pipeline;
-
-typedef struct s_redirections
+typedef struct s_parser
 {
-    char **tokens;
-    char **inside;
-    char **outside;
-}   t_redirections;
+    char        *line;
+    char        **commands;
+}               t_parser;
+
 int hh;
 int         get_next_line(int fd, char **line);
 char        *ft_substr(char *s, unsigned int start, size_t len);
