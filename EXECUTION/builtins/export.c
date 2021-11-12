@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/02 09:32:55 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 23:39:37 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,9 @@ int	update_node(t_envs *head, char	*str)
 	tmp = getenv_node(tmp_key);
 	if (tmp != NULL)
 	{
+		free(tmp->key);
 		if (tmp->val != NULL)
-			free(tmp->val);
+			free(tmp->val);  
 		split_env(ft_strdup(str), &tmp->key, &tmp->val);
 		free(tmp_key);
 		return (1);
@@ -60,7 +61,10 @@ void	add_node(t_envs *head, char	*str)
 	t_envs	*new;
 
 	if (!check_key_err(str))
+	{
+		write(2, "not a valid identifier\n", 23 );
 		return ;
+	}
 	current = head;
 	if (update_node(head, str) == 1)
 		return ;
@@ -79,9 +83,9 @@ void	export(t_cmd *cmd)
 {
 	int	i;
 
-	if (cmd->args_count == 0)
+	if (cmd->args[1] == NULL)
 		print_export();
-	i = 0;
+	i = 1;
 	while (cmd->args[i])
 	{
 		add_node(g_exe.envs_list, cmd->args[i]);

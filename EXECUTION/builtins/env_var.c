@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/02 09:32:34 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 22:55:28 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	split_env(char *f, char **key, char **val)
 	int		j;
 
 	i = 0;
-	if (!f || !ft_isalpha(f[0]))
+	if (!f || (!ft_isalpha(f[0]) && f[0] != '_'))
 	{
 		free(f);
 		return (1);
@@ -72,7 +72,7 @@ int	check_key_err(char	*str)
 {
 	int	i;
 
-	if (!ft_isalpha(str[0]))
+	if (!ft_isalpha(str[0]) && str[0] != '_')
 		return (0);
 	i = 0;
 	while (str[i] != '=' && str[i])

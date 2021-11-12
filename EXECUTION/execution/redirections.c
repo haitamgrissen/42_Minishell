@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 23:53:50 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:49:00 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/12 03:44:16 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	redirect_file(t_redirection *rdr)
 {
 	int				tmp_fd;
 	t_redirection	*current;
-
 	current = rdr;
 	while (current != NULL)
 	{
@@ -73,7 +72,7 @@ int	create_file(t_redirection *rdr)
 	return (fd);
 }
 
-void	redirect(t_cmd *cmd, t_pipes *p)
+void	redirect(t_cmd *cmd)
 {
 	t_redirection	*current;
 	int				fd;

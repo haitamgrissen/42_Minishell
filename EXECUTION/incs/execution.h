@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:52:58 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 21:56:09 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,10 @@ char		*get_working_path(char	*command);
 int			execute_pipe(t_cmd *cmd);
 void		execute_cmd(t_cmd *cmd);
 
-void		redirect(t_cmd *cmd, t_pipes *p);
+void		redirect(t_cmd *cmd);
 int			open_herdoc(t_redirection *rdr);
 void		herdocs(t_cmd *cmd);
+void		execute_builtin(t_cmd *cmd);
+int			is_builtin(char *str);
+
 #endif

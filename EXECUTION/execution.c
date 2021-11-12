@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:47:18 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/12 03:49:58 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,26 +61,28 @@ void	free_envs(t_envs	**head)
 
 int		is_builtin(char *str)
 {
-	if (!ft_strcmp(str, "echo"))
-		return (1);
-	if (!ft_strcmp(str, "cd"))
-		return (1);
-	if (!ft_strcmp(str, "pwd"))
-		return (1);
-	if (!ft_strcmp(str, "env"))
-		return (1);
-	if (!ft_strcmp(str, "export"))
-		return (1);
-	if (!ft_strcmp(str, "unset"))
-		return (1);
-	if (!ft_strcmp(str, "exit"))
-		return (1);
+	if (str)
+	{
+		if (!ft_strcmp(str, "echo"))
+			return (1);
+		if (!ft_strcmp(str, "cd"))
+			return (1);
+		if (!ft_strcmp(str, "pwd"))
+			return (1);
+		if (!ft_strcmp(str, "env"))
+			return (1);
+		if (!ft_strcmp(str, "export"))
+			return (1);
+		if (!ft_strcmp(str, "unset"))
+			return (1);
+		if (!ft_strcmp(str, "exit"))
+			return (1);
+	}
 	return (0);
 }
 
 void	execute_builtin(t_cmd *cmd)
 {
-	cmd->args = cmd->args + 1;
 	if (!ft_strcmp(cmd->cmd, ECHO))
 		echo(cmd);
 	else if (!ft_strcmp(cmd->cmd, CD))
@@ -123,8 +125,6 @@ int     main(int ac, char **av, char **env)
 {
 	init_envs(env);
 
-
-
 	t_cmd	*cmd;
 	cmd = malloc(sizeof(t_cmd));
 	cmd->cmd = ft_strdup("cat");
@@ -132,11 +132,11 @@ int     main(int ac, char **av, char **env)
 
 	cmd->rdr = NULL;
 	cmd->rdr = malloc(sizeof(t_redirection));
-	cmd->rdr->type = RDRIN;
+	cmd->rdr->type = RDROUT;
 	cmd->rdr->file = ft_strdup("hello");
 
 	cmd->rdr->next = malloc(sizeof(t_redirection));
-	cmd->rdr->next->type = RDROUT;
+	cmd->rdr->next->type = APPEND;
 	cmd->rdr->next->file = ft_strdup("Nor");
 
 	cmd->rdr->next->next = malloc(sizeof(t_redirection));
@@ -149,9 +149,17 @@ int     main(int ac, char **av, char **env)
 	cmd->rdr->next->next->next->next = NULL;
 
 	// cmd->next = NULL;
-
-
+	
+	// //g_exe.envs_arr = env_to_arr();
+	// //cmd->args_count = 1;
+	// //unset(cmd);
 	// execute_pipe(cmd);
+	// while(1)
+	// ;
+	// //system("leaks hada");
+	// //print_export();
+	// //system("leaks a.out");
+	// //execute_pipe(cmd);
 	// return 0;
 
 
@@ -159,7 +167,7 @@ int     main(int ac, char **av, char **env)
 	cmd->next = malloc(sizeof(t_cmd));
 	cmd->next->cmd = ft_strdup("cat");
 	cmd->next->args = ft_split("cat", ' ');
-
+	cmd->next->rdr = NULL;
 	cmd->next->rdr = malloc(sizeof(t_redirection));
 	cmd->next->rdr->type = RDRIN;
 	cmd->next->rdr->file = ft_strdup("hello");
@@ -181,12 +189,13 @@ int     main(int ac, char **av, char **env)
 	cmd->next->next->cmd = ft_strdup("ls");
 	cmd->next->next->args = ft_split("ls", ' ');
 	cmd->next->next->next = NULL;
+	cmd->next->next->rdr = NULL;
 
 
 	execute_pipe(cmd);
 
-	system("leaks hada");
-	//while (1);
+	//system("leaks hada");
+	while (1);
 //char	*str = get_working_path(av[1]);
 	// g_exe.envs_arr = env_to_arr();
 	

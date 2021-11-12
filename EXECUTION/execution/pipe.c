@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:51:11 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/12 04:09:25 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	for_cmds(t_cmd *cmd, t_pipes *p)
 {
 	pipe(p->pipe_);
+	close(p->p_out);
 	p->p_out = p->pipe_[1];
 	p->pid = fork();
 	if (p->pid == 0)
@@ -23,7 +24,7 @@ void	for_cmds(t_cmd *cmd, t_pipes *p)
 		close(p->pipe_[1]);
 		dup2(p->p_in, 0);
 		close(p->pipe_[0]);
-		redirect(cmd, p);
+		redirect(cmd);
 		execute_cmd(cmd);
 	}
 	if (p->p_in > 2)
@@ -37,10 +38,11 @@ void	last_cmd(t_cmd *cmd, t_pipes *p)
 	p->pid = fork();
 	if (p->pid == 0)
 	{
-		dup2(p->p_in, 0);
+		if (p->p_in != 0)
+			dup2(p->p_in, 0);
 		if (p->p_in != 0)
 			close(p->p_in);
-		redirect(cmd, p);
+		redirect(cmd);
 		execute_cmd(cmd);
 	}
 	if (p->pipe_[1] != 1)
@@ -49,6 +51,17 @@ void	last_cmd(t_cmd *cmd, t_pipes *p)
 		close(p->p_in);
 }
 
+void	single_cmd(t_cmd *cmd, t_pipes *p)
+{
+	p->pid = fork();
+	if (p->pid == 0)
+	{
+		redirect(cmd);
+		execute_cmd(cmd);
+	}
+	close(p->p_in);
+	close(p->p_out);
+}
 void	close_herdocs(t_cmd *cmd)
 {
 	t_cmd			*current;
@@ -64,14 +77,29 @@ void	close_herdocs(t_cmd *cmd)
 			if (cur_rdr->type == HEREDOC)
 			{
 				f = ft_strjoin(strdup("/tmp/file"), ft_itoa(cur_rdr->index));
+				close(cur_rdr->fd);
 				unlink(f);
 				free(f);
-				close(cur_rdr->fd);
 			}
 			cur_rdr = cur_rdr->next;
 		}
 		current = current->next;
 	}
+}
+
+void	simple_cmd(t_cmd *cmd)
+{
+	int	in;
+	int	out;
+
+	in = dup(0);
+	out = dup(1);
+	redirect(cmd);
+	execute_builtin(cmd);
+	dup2(in, 0);
+	dup2(out, 1);
+	close(in);
+	close(out);
 }
 
 void	waiting_sigs(t_pipes *p)
@@ -93,20 +121,32 @@ int	execute_pipe(t_cmd *cmd)
 {
 	t_cmd	*current;
 	t_pipes	p;
+	int		i;
 
-	p.p_in = dup(0);
-	p.p_out = dup(1);
 	current = cmd;
 	herdocs(cmd);
-	while (current)
+	if (!current->next && is_builtin(current->cmd))
+		simple_cmd(cmd);
+	else
 	{
-		if (current->next)
-			for_cmds(current, &p);
-		else
-			last_cmd(current, &p);
-		current = current->next;
+		p.p_in = dup(0);
+		p.p_out = dup(1);
+		i = 1;
+		while (current)
+		{
+			if (i++ == 1 && current->next == NULL)
+				single_cmd(current, &p);
+			else
+			{
+				if (current->next)
+					for_cmds(current, &p);
+				else
+					last_cmd(current, &p);
+			}
+			current = current->next;
+		}
+		waiting_sigs(&p);
 	}
-	waiting_sigs(&p);
 	close_herdocs(cmd);
 	return (0);
 }

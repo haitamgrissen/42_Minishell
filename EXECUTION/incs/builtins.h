@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:49:26 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/11 10:31:00 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 21:56:06 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,5 +46,7 @@ void		unset(t_cmd *cmd);
 void		export(t_cmd *cmd);
 char		**env_to_arr(void);
 char		*getenv_val(char *key);
+
+
 
 #endif

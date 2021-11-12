@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 13:39:45 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/10/21 13:24:38 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/11 22:07:43 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	cd(t_cmd *cmd)
 	char	*path;
 	t_envs	*env;
 
-	if (cmd->args_count)
-		path = ft_strdup(cmd->args[0]);
+	if (cmd->args[1])
+		path = ft_strdup(cmd->args[1]);
 	else
 	{
 		env = getenv_node("HOME");
