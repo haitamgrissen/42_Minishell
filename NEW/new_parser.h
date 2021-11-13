@@ -25,6 +25,7 @@ typedef struct s_lexer
 	char			c;
 	char			*content;
 	unsigned int	i;
+	t_types			last_t;
 }					t_lexer;
 
 typedef struct s_token
@@ -50,6 +51,9 @@ t_token	*l_advance_token(t_lexer* lexer, t_token	* token);
 char	*l_char_str(t_lexer* lexer);
 t_token	*switch_token(t_lexer *lexer);
 
+
+char	*continue_word(t_lexer *lexer);
+char	*continue_quotes(t_lexer *lexer, char c);
 
 void	*ft_realloc(void *ptr, size_t newsize);
 

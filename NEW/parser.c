@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 05:52:42 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/13 14:21:23 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ t_token **parse(t_lexer *lexer)
 	while (tokens[i] != NULL)
 	{
 		printf("%s\n", tokens[i]->value);
+		printf("%d\n", tokens[i]->type);
 		i++;
 	}
 	return (tokens);

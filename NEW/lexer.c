@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:12:57 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 05:52:06 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/13 14:41:26 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,8 +131,6 @@ t_token	*l_collect_string(t_lexer* lexer, char c)
 
 	val = malloc(sizeof(char));
 	val[0] = '\0';
-	// s = l_char_str(lexer); // leave this to add quotes back to word
-	// val = ft_strjoin(val, s);
 	l_advance(lexer);
 	while (lexer->c != c && lexer->c != '\0')
 	{
@@ -143,12 +141,73 @@ t_token	*l_collect_string(t_lexer* lexer, char c)
 		val = ft_strjoin(val, s);
 		l_advance(lexer);
 	}
-	// s = l_char_str(lexer);
-	// val = ft_strjoin(val, s);
 	l_advance(lexer);
+	if (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
+	{
+		if (lexer->c == '\'' || lexer->c == '\"')
+			val = ft_strjoin(val, continue_quotes(lexer, lexer->c));
+		else
+			val = ft_strjoin(val, continue_word(lexer));
+	}
 	return (init_token(WORD, val));
 }
- 
+
+char	*continue_quotes(t_lexer *lexer, char c)
+{
+	char	*val;
+	char	*s;
+
+	val = malloc(sizeof(char));
+	val[0] = '\0';
+	l_advance(lexer);
+	while (lexer->c != c && lexer->c != '\0')
+	{
+		if (lexer->c == '$' && c == '\"')	
+			s = expand_in_q(lexer);
+		else
+			s = l_char_str(lexer);
+		val = ft_strjoin(val, s);
+		l_advance(lexer);
+	}
+	l_advance(lexer);
+	if (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
+	{
+		if (lexer->c == '\'' || lexer->c == '\"')
+			val = ft_strjoin(val, continue_quotes(lexer, lexer->c));
+		else
+			val = ft_strjoin(val, continue_word(lexer));
+	}
+	return (val);
+}
+
+char	*continue_word(t_lexer *lexer)
+{
+	char	*val;
+	char	*s;
+
+	val = malloc(sizeof(char));
+	val[0] = '\0';
+	while (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
+	{
+		if(lexer->c == '\'' || lexer->c == '\"')
+		{
+			s = continue_quotes(lexer, lexer->c);
+			val = ft_strjoin(val, s);
+			break;
+		}
+		else
+			s = l_char_str(lexer);
+		val = ft_strjoin(val, s);
+		l_advance(lexer);
+	}
+	if (val[0] == '\0')
+	{
+		free(val);
+		return (NULL);
+	}
+	return (val);
+}
+
 t_token	*l_collect_wd(t_lexer* lexer)
 {
 	char	*val;
@@ -156,10 +215,16 @@ t_token	*l_collect_wd(t_lexer* lexer)
 
 	val = malloc(sizeof(char));
 	val[0] = '\0';
-
 	while (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
 	{
-		s = l_char_str(lexer);
+		if(lexer->c == '\'' || lexer->c == '\"')
+		{
+			s = continue_quotes(lexer, lexer->c);
+			val = ft_strjoin(val, s);
+			break;
+		}
+		else
+			s = l_char_str(lexer);
 		val = ft_strjoin(val, s);
 		l_advance(lexer);
 	}
