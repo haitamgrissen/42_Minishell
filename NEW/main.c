@@ -90,6 +90,7 @@ int main(int ac, char **av, char **env)
 	t_parser	parser;
 	t_lexer		*lexer;
 	t_token		*token;
+	t_token		**tokens;
 	
 	//t_part		**tab;
     
@@ -113,12 +114,13 @@ int main(int ac, char **av, char **env)
 
 
 		lexer = init_lexer(parser.line);
-		while ((token = l_next_token(lexer)) != NULL)
-		{
-			printf("|type : %d\n|val : %s\n", token->type, token->value);
-			free(token->value);
-			free(token);
-		}
+		// while ((token = l_next_token(lexer)) != NULL)
+		// {
+		// 	printf("|type : %d\n|val : %s\n", token->type, token->value);
+		// 	free(token->value);
+		// 	free(token);
+		// }
+		tokens = parse(lexer);
 		free(lexer);
 
 

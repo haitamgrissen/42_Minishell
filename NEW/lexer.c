@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:12:57 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 03:47:05 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/13 05:52:06 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,10 +97,10 @@ t_token	*expand_token(t_lexer *lexer)
 char	*expand_in_q(t_lexer *lexer)
 {
 	char	*val;
-	char	*s;
 	int		i;
 
 	l_advance(lexer);
+	val = malloc(sizeof(char));
 	i = 0;
 	while (lexer->c != '\"' && lexer->c != ' '
 			&& lexer->c != '$' && lexer->c != '?')
@@ -109,10 +109,16 @@ char	*expand_in_q(t_lexer *lexer)
 		i++;
 	}
 	if (lexer->c == '?')
+	{
+		free(val);
 		return (ft_strdup("100"));
+	}
 	lexer->i--;
 	if (i == 0)
+	{
+		free(val);
 		return (ft_strdup(""));
+	}
 	val = ft_strjoin(val, ft_strdup("EXPANSION"));
 	val = ft_strjoin(val, ft_strdup(""));
 	return (val);
@@ -125,10 +131,10 @@ t_token	*l_collect_string(t_lexer* lexer, char c)
 
 	val = malloc(sizeof(char));
 	val[0] = '\0';
-	// s = l_char_str(lexer);
+	// s = l_char_str(lexer); // leave this to add quotes back to word
 	// val = ft_strjoin(val, s);
 	l_advance(lexer);
-	while (lexer->c != c)
+	while (lexer->c != c && lexer->c != '\0')
 	{
 		if (lexer->c == '$' && c == '\"')	
 			s = expand_in_q(lexer);
@@ -206,4 +212,38 @@ void	*ft_realloc(void *ptr, size_t newsize)
 	memcpy(ptr, newptr, cursize);
 	free(ptr);
 	return (newptr);
+}
+
+int tab_len(t_token **o) {
+
+	int i;
+
+	i = 0;
+	if (o)
+	{
+		
+		while (o[i] != NULL)
+			i++;
+	}
+	return (i);
+}
+
+t_token **ft_reallocc(t_token** current, t_token *to_add)
+{
+
+	t_token **ret;
+	int i = 0;
+	int current_len = tab_len(current);
+	ret = (t_token **)malloc(sizeof(t_token *) * (current_len +  2));
+	while (i < current_len)
+	{
+		ret[i] = current[i];
+		//free(current[i]->value);
+		//free(current[i]);
+		i++;
+	}
+	free(current);
+	ret[i++] = to_add;
+	ret[i] = NULL;
+	return (ret);
 }

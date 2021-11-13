@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 02:26:29 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/13 05:52:42 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ t_token	**fill_tokens(t_token **src, t_token **dst, t_token *token)
 t_token **parse(t_lexer *lexer)
 {
 	t_token **tokens;
-	t_token **tmp;
 	int		i;
 
 	tokens = malloc(sizeof(struct s_tokens *) * 2);
@@ -40,9 +39,7 @@ t_token **parse(t_lexer *lexer)
 	while (tokens[i] != NULL)
 	{
 		i++;
-		tmp = realloc(tokens, (i + 2) * sizeof(struct s_tokens*));
-		tmp = fill_tokens(tokens, tmp, l_next_token(lexer));
-		tokens = tmp;
+		tokens = ft_reallocc(tokens, l_next_token(lexer));
 	}
 	i = 0;
 	while (tokens[i] != NULL)
