@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:12:57 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 15:55:27 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/14 20:57:00 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@ t_token	*l_collect_wd(t_lexer *lexer)
 	char	*val;
 	char	*s;
 
-	val = malloc(sizeof(char));
-	val[0] = '\0';
+	val = ft_strdup("");
 	while (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
 	{
 		if (lexer->c == '\'' || lexer->c == '\"')
@@ -26,6 +25,11 @@ t_token	*l_collect_wd(t_lexer *lexer)
 			s = continue_quotes(lexer, lexer->c);
 			val = ft_strjoin(val, s);
 			break ;
+		}
+		else if (lexer->c == '$')
+		{
+			s = get_exp_word(lexer);
+			l_retreat(lexer);
 		}
 		else
 			s = l_char_str(lexer);

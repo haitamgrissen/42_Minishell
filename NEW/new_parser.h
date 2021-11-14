@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 23:24:11 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 23:27:22 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/14 19:24:04 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ t_token	*init_token(int type, char *value);
 
 t_lexer	*init_lexer(char *contents);
 void	l_advance(t_lexer *lexer);
+void	l_retreat(t_lexer *lexer);
 void	l_skip_white(t_lexer *lexer);
 t_token	*l_next_token(t_lexer *lexer);
 t_token	*l_collect_string(t_lexer *lexer, char c);
@@ -65,10 +66,23 @@ char	*continue_quotes(t_lexer *lexer, char c);
 void	*ft_realloc(void *ptr, size_t newsize);
 
 int		is_operator(char c);
-t_token	**parse(t_lexer *lexer);
+void	parse(t_lexer *lexer);
 
 t_token	*expand_token(t_lexer *lexer);
 
 t_token	**ft_reallocc(t_token **current, t_token *to_add);
 
+char	*get_exp_word(t_lexer *lexer);
+
+/*
+	signals
+*/
+
+void	catch_the_signal(void);
+void	cntl_slash(int sig);
+void	cntl_c(int sig);
+
+
+
+void	create_cmds(t_token **tokens);
 #endif

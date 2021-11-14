@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 15:12:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 15:55:27 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/14 19:22:57 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,15 @@ void	l_advance(t_lexer *lexer)
 	if (lexer->c != '\0' && lexer->i < ft_strlen(lexer->content))
 	{
 		lexer->i += 1;
+		lexer->c = lexer->content[lexer->i];
+	}
+}
+
+void	l_retreat(t_lexer *lexer)
+{
+	if (lexer->i > 0)
+	{
+		lexer->i -= 1;
 		lexer->c = lexer->content[lexer->i];
 	}
 }
@@ -69,8 +78,8 @@ t_token	*l_next_token(t_lexer *lexer)
 	{
 		if (ft_isspace(lexer->c))
 			l_skip_white(lexer);
-		if (lexer->c == '$')
-			return (expand_token(lexer));
+		/*if (lexer->c == '$')
+			return (expand_token(lexer));*/
 		if (!is_operator(lexer->c) && lexer->c != '\'' && lexer->c != '\"')
 			return (l_collect_wd(lexer));
 		if (lexer->c == '\"')
