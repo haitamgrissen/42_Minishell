@@ -85,8 +85,9 @@ int		skip_other(char *line)
 // }
 
 
-int main(int ac, char **av, char **env)
+int     main(int ac, char **av, char **env)
 {
+	init_envs(env);
 	t_parser	parser;
 	t_lexer		*lexer;
 	t_token		*token;

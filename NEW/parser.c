@@ -6,25 +6,37 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 14:21:23 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/13 16:42:08 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "new_parser.h"
 
-t_token	**fill_tokens(t_token **src, t_token **dst, t_token *token)
+int	analyze_syntax(t_token **tokens)
 {
-	int	i;
+	t_types	prev;
+	t_types	curr;
+	int		i;
 
 	i = 0;
-	while(src[i] != NULL)
+	prev = -1;
+	while (tokens[i])
 	{
-		dst[i] = src[i];
+		curr = tokens[i]->type;
+		if (prev != WORD && prev != -1 && curr != WORD)
+		{
+			dprintf(2, "Syntax Error!\n");
+			return (0);
+		}
+		prev = curr;
 		i++;
 	}
-	dst[i] = token;
-	dst[i + 1] = NULL;
-	return (dst);
+	if (curr != WORD)
+	{
+			dprintf(2, "Syntax Error!\n");
+			return (0);
+	}
+	return(1);
 }
 
 t_token **parse(t_lexer *lexer)
@@ -44,9 +56,10 @@ t_token **parse(t_lexer *lexer)
 	i = 0;
 	while (tokens[i] != NULL)
 	{
-		printf("%s\n", tokens[i]->value);
-		printf("%d\n", tokens[i]->type);
+		printf("%s ", tokens[i]->value);
 		i++;
 	}
+	printf("\n");
+	analyze_syntax(tokens);
 	return (tokens);
 }
