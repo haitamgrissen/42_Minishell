@@ -6,13 +6,11 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 15:46:44 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/14 20:58:58 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/14 22:44:27 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "new_parser.h"
-
-
 
 char	*get_env_val(char *key)
 {
@@ -25,17 +23,6 @@ char	*get_env_val(char *key)
 		return (NULL);
 }
 
-t_token	*expand_token(t_lexer *lexer)
-{
-	t_token	*t;
-
-	l_advance(lexer);
-	t = l_collect_wd(lexer);
-	free(t->value);
-	t->value = get_env_val(t->value);
-	return (t);
-}
-
 char	*expand_in_q(t_lexer *lexer)
 {
 	char	*val;
@@ -45,9 +32,10 @@ char	*expand_in_q(t_lexer *lexer)
 	if (lexer->c == '\"' || lexer->c == '$' || lexer->c == ' ')
 		return (ft_strdup("$"));
 	if (lexer->c == '?')
-		return (ft_strdup("100"));//return error itoa();
+		return (expand_exit_error(lexer));
 	val = ft_strdup("");
-	while (lexer->c != '\"' && lexer->c != ' ' && lexer->c != '$' && lexer->c != '\0')
+	while (lexer->c != '\"' && lexer->c != ' '
+		&& lexer->c != '$' && lexer->c != '\0')
 	{
 		tmp = l_char_str(lexer);
 		val = ft_strjoin(val, tmp);
@@ -67,8 +55,7 @@ t_token	*l_collect_string(t_lexer *lexer, char c)
 	char	*val;
 	char	*s;
 
-	val = malloc(sizeof(char));
-	val[0] = '\0';
+	val = ft_strdup("");
 	l_advance(lexer);
 	while (lexer->c != c && lexer->c != '\0')
 	{
@@ -83,15 +70,10 @@ t_token	*l_collect_string(t_lexer *lexer, char c)
 		l_advance(lexer);
 	}
 	if (lexer->c != c)
-		ft_putstr_fd("OPEN QUOTES ERROR\n", 2);///////////
+		return (open_quotes_err(val));
 	l_advance(lexer);
 	if (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
-	{
-		if (lexer->c == '\'' || lexer->c == '\"')
-			val = ft_strjoin(val, continue_quotes(lexer, lexer->c));
-		else
-			val = ft_strjoin(val, continue_word(lexer));
-	}
+		val = after_quotes(lexer, val);
 	return (init_token(WORD, val));
 }
 
@@ -117,12 +99,7 @@ char	*continue_quotes(t_lexer *lexer, char c)
 	}
 	l_advance(lexer);
 	if (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
-	{
-		if (lexer->c == '\'' || lexer->c == '\"')
-			val = ft_strjoin(val, continue_quotes(lexer, lexer->c));
-		else
-			val = ft_strjoin(val, continue_word(lexer));
-	}
+		val = after_quotes(lexer, val);
 	return (val);
 }
 
@@ -131,8 +108,7 @@ char	*continue_word(t_lexer *lexer)
 	char	*val;
 	char	*s;
 
-	val = malloc(sizeof(char));
-	val[0] = '\0';
+	val = ft_strdup("");
 	while (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
 	{
 		if (lexer->c == '\'' || lexer->c == '\"')
@@ -141,42 +117,17 @@ char	*continue_word(t_lexer *lexer)
 			val = ft_strjoin(val, s);
 			break ;
 		}
+		else if (lexer->c == '$')
+		{
+			s = expand_in_q(lexer);
+			l_retreat(lexer);
+		}
 		else
 			s = l_char_str(lexer);
 		val = ft_strjoin(val, s);
 		l_advance(lexer);
 	}
 	if (val[0] == '\0')
-	{
-		free(val);
-		return (NULL);
-	}
+		return ((char *)free_retnull(val));
 	return (val);
-}
-
-char	*get_exp_word(t_lexer *lexer)
-{
-	char	*val;
-	char	*tmp;
-
-	l_advance(lexer);
-	if (lexer->c == '\"' || lexer->c == '$' || lexer->c == ' ' || lexer->c == '\0')
-		return (ft_strdup("$"));
-	if (lexer->c == '?')
-		return (ft_strdup("100"));//return error itoa();
-	val = ft_strdup("");
-	while (!is_operator(lexer->c) && !ft_isspace(lexer->c) 
-		&& lexer->c != '\0' && lexer->c != '$' && lexer->c != '\'' && lexer->c != '\"')
-	{
-		tmp = l_char_str(lexer);
-		val = ft_strjoin(val, tmp);
-		l_advance(lexer);
-	}
-	tmp = get_env_val(val);
-	free(val);
-	if (lexer->c == '$')
-		tmp = ft_strjoin(tmp, get_exp_word(lexer));
-	if (lexer->c == '\'' || lexer->c == '\"')
-			tmp = ft_strjoin(tmp, continue_quotes(lexer, lexer->c));
-	return (tmp);
 }

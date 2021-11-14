@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:12:57 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/14 20:57:00 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/14 22:45:44 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,7 @@ t_token	*l_collect_wd(t_lexer *lexer)
 		l_advance(lexer);
 	}
 	if (val[0] == '\0')
-	{
-		free(val);
-		return (NULL);
-	}
+		return (free_retnull(val));
 	return (init_token(WORD, val));
 }
 
@@ -58,4 +55,22 @@ char	*l_char_str(t_lexer *lexer)
 	s[0] = lexer->c;
 	s[1] = '\0';
 	return (s);
+}
+
+char	*expand_exit_error(t_lexer *lexer)
+{
+	l_advance(lexer);
+	return (ft_itoa(g_exe.exite_err));
+}
+
+/*
+	might change specially printing
+*/
+
+t_token	*open_quotes_err(char *val)
+{
+	free(val);
+	ft_putstr_fd("OPEN QUOTES ERROR\n", 2);
+	g_exe.lexer_err = 1;
+	return (NULL);
 }
