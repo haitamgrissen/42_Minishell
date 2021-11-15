@@ -1,3 +1,0 @@
-ls                  -al      | grep -4 | echo hello --> lchar *line
-
-tab **  = tab[0] = ls -al
