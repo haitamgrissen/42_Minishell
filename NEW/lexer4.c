@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 21:12:00 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/14 22:37:12 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 01:54:35 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,15 @@ char	*after_quotes(t_lexer *lexer, char *val)
 		return (ft_strjoin(val, continue_word(lexer)));
 }
 
-t_token	*free_retnull(char	*val)
+char	*check_exp(t_lexer *lexer, char *tmp)
 {
-	free(val);
-	return (NULL);
+	if (lexer->c == '$')
+		tmp = ft_strjoin(tmp, get_exp_word(lexer));
+	if (lexer->c == ' ' && tmp[0] == '\0')
+		tmp = ft_strjoin(tmp, ft_strdup(" "));
+	if (lexer->c == '\'' || lexer->c == '\"')
+		tmp = ft_strjoin(tmp, continue_quotes(lexer, lexer->c));
+	return (tmp);
 }
 
 char	*get_exp_word(t_lexer *lexer)
@@ -65,10 +70,7 @@ char	*get_exp_word(t_lexer *lexer)
 	}
 	tmp = get_env_val(val);
 	free(val);
-	if (lexer->c == '$')
-		tmp = ft_strjoin(tmp, get_exp_word(lexer));
-	if (lexer->c == '\'' || lexer->c == '\"')
-			tmp = ft_strjoin(tmp, continue_quotes(lexer, lexer->c));
+	tmp = check_exp(lexer, tmp);
 	return (tmp);
 }
 

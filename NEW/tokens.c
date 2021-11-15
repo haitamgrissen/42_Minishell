@@ -6,13 +6,33 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 15:47:51 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/13 23:23:33 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 04:15:01 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "new_parser.h"
 
-int	tab_len(t_token **o)
+void	free_tokens(t_token **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		free(tokens[i]->value);
+		free(tokens[i]);
+		i++;
+	}
+	free(tokens);
+}
+
+t_token	*free_retnull(char	*val)
+{
+	free(val);
+	return (NULL);
+}
+
+int	token_tab_len(t_token **o)
 {
 	int	i;
 
@@ -25,13 +45,13 @@ int	tab_len(t_token **o)
 	return (i);
 }
 
-t_token	**ft_reallocc(t_token **current, t_token *to_add)
+t_token	**realloc_tokens(t_token **current, t_token *to_add)
 {
 	t_token	**ret;
 	int		i;
 	int		current_len;
 
-	current_len = tab_len(current);
+	current_len = token_tab_len(current);
 	i = 0;
 	ret = (t_token **)malloc(sizeof(t_token *) * (current_len + 2));
 	while (i < current_len)

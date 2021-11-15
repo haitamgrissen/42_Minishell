@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 15:46:44 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/14 22:44:27 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 01:47:49 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*get_env_val(char *key)
 	if (node != NULL)
 		return (ft_strdup(node->val));
 	else
-		return (NULL);
+		return (strdup(""));
 }
 
 char	*expand_in_q(t_lexer *lexer)
@@ -43,8 +43,6 @@ char	*expand_in_q(t_lexer *lexer)
 	}
 	tmp = get_env_val(val);
 	free(val);
-	if (lexer->c == ' ')
-		tmp = ft_strjoin(tmp, ft_strdup(" "));
 	if (lexer->c == '$')
 		tmp = ft_strjoin(tmp, expand_in_q(lexer));
 	return (tmp);
@@ -97,6 +95,8 @@ char	*continue_quotes(t_lexer *lexer, char c)
 		val = ft_strjoin(val, s);
 		l_advance(lexer);
 	}
+	if (lexer->c != c)
+		g_exe.lexer_err = 1;
 	l_advance(lexer);
 	if (!is_operator(lexer->c) && !ft_isspace(lexer->c) && lexer->c != '\0')
 		val = after_quotes(lexer, val);

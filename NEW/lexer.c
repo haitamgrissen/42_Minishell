@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 23:12:57 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/14 22:45:44 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 00:18:10 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,9 @@ char	*expand_exit_error(t_lexer *lexer)
 	return (ft_itoa(g_exe.exite_err));
 }
 
-/*
-	might change specially printing
-*/
-
 t_token	*open_quotes_err(char *val)
 {
 	free(val);
-	ft_putstr_fd("OPEN QUOTES ERROR\n", 2);
 	g_exe.lexer_err = 1;
 	return (NULL);
 }
