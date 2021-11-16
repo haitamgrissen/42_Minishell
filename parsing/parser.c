@@ -6,7 +6,7 @@
 /*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 10:40:11 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 13:39:07 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	analyze_syntax(t_token **tokens)
 void	syntax_error(int err)
 {
 	if (err == 1)
-		ft_putstr_fd("BASH: Syntax Error!\n", 2);
+		//ft_putstr_fd("BASH: Syntax Error!hihi\n", 2);
+		;
 	if (err == 2)
 		ft_putstr_fd("BASH: Open Quotes!\n", 2);
 	if (err == 3)
