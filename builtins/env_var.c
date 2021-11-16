@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_var.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 18:02:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:10 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:16:02 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,4 +104,5 @@ void	init_envs(char **env)
 		add_node(ret, env[i]);
 		i++;
 	}
+	g_exe.envs_arr = env_to_arr();
 }

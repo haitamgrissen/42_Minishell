@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 13:39:45 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:00 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:30:49 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	update_pwds(char *newpwd)
+void	update_pwds(void)
 {
 	t_envs	*oldnode;
 	t_envs	*currentnode;
@@ -49,6 +49,6 @@ void	cd(t_cmd *cmd)
 	if (chdir(path))
 		printf("%s: Not a directory\n", path);
 	else
-		update_pwds(path);
+		update_pwds();
 	free(path);
 }

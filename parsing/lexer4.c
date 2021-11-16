@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 21:12:00 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:41 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:35:23 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 t_token	*l_next_token(t_lexer *lexer)
 {
-	while (lexer->c != '\0' && lexer->i < ft_strlen(lexer->content))
+	while (lexer->c != '\0' && (int)lexer->i < ft_strlen(lexer->content))
 	{
 		if (ft_isspace(lexer->c))
 			l_skip_white(lexer);

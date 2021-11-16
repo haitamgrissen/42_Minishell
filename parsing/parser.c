@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:50 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:40:11 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ int	analyze_syntax(t_token **tokens)
 	while (tokens[i])
 	{
 		curr = tokens[i]->type;
-		if (prev != WORD && prev != -1 && curr != WORD
+		if (prev != WORD && prev != (t_types)-1 && curr != WORD
 			&& prev != PIPE && curr != PIPE)
 			return (0);
-		if (prev == -1 && curr == PIPE)
+		if (prev == (t_types)-1 && curr == PIPE)
 			return (0);
 		prev = curr;
 		i++;
@@ -77,7 +77,7 @@ int	analyze_syntax(t_token **tokens)
 	return (1);
 }
 
-void	syntax_error(t_token **tokens, int err)
+void	syntax_error(int err)
 {
 	if (err == 1)
 		ft_putstr_fd("BASH: Syntax Error!\n", 2);
@@ -102,11 +102,11 @@ void	parse(t_lexer *lexer)
 		tokens = realloc_tokens(tokens, l_next_token(lexer));
 	}
 	if (!analyze_syntax(tokens))
-		syntax_error(tokens, 1);
+		syntax_error(1);
 	else if (g_exe.lexer_err == 1)
-		syntax_error(tokens, 2);
+		syntax_error(2);
 	else if (check_ambigous_file(tokens))
-		syntax_error(tokens, 3);
+		syntax_error(3);
 	else
 		create_cmds(tokens);
 	free_tokens(tokens);

@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/14 17:03:41 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:59:00 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:34:02 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	cntl_c(int sig)
+void	cntl_c()
 {
-	g_exe.exite_err = 131;
+	g_exe.exite_err = 1;
 	ft_putstr_fd("BASH$>:\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

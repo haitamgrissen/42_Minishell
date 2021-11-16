@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:17 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:31:56 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	print_export(void)
 		printf("declare -x %s=\"%s\"\n", current->key, current->val);
 }
 
-int	update_node(t_envs *head, char	*str)
+int	update_node(char	*str)
 {
 	t_envs	*tmp;
 	char	*tmp_key;
@@ -52,6 +52,7 @@ int	update_node(t_envs *head, char	*str)
 		return (1);
 	}
 	free(tmp_key);
+	
 	return (0);
 }
 
@@ -66,7 +67,7 @@ void	add_node(t_envs *head, char	*str)
 		return ;
 	}
 	current = head;
-	if (update_node(head, str) == 1)
+	if (update_node(str) == 1)
 		return ;
 	while (current->next != NULL)
 		current = current->next;
@@ -89,6 +90,8 @@ void	export(t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		add_node(g_exe.envs_list, cmd->args[i]);
+		free_env_arr(g_exe.envs_arr);
+		g_exe.envs_arr = env_to_arr();
 		i++;
 	}
 }

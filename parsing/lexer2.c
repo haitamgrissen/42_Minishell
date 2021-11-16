@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 15:12:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:34 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:34:51 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_lexer	*init_lexer(char *line)
 
 void	l_advance(t_lexer *lexer)
 {
-	if (lexer->c != '\0' && lexer->i < ft_strlen(lexer->content))
+	if (lexer->c != '\0' && (int)lexer->i < ft_strlen(lexer->content))
 	{
 		lexer->i += 1;
 		lexer->c = lexer->content[lexer->i];

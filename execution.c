@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 11:36:37 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:42:04 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:47:34 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-
 
 void	execute_cmd(t_cmd *cmd)
 {
@@ -25,12 +22,18 @@ void	execute_cmd(t_cmd *cmd)
 	{
 		char *str = get_working_path(cmd->cmd);
 		if (str)
+		{
 			execve(str, cmd->args, g_exe.envs_arr);
+			ft_putstr_fd(strerror(errno), 2);
+			write(2, "\n", 1);
+			exit(0);
+		}
 		else
 		{
 			write(2, cmd->cmd, ft_strlen(cmd->cmd));
 			write(2, ": ", 2);
 			write(2, "command not found\n", 18);
+			g_exe.exite_err = 127;
 		}
 	}
 	exit(0);

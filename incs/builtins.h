@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 14:49:26 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 22:01:28 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/15 23:22:01 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ void		unset(t_cmd *cmd);
 void		export(t_cmd *cmd);
 char		**env_to_arr(void);
 char		*getenv_val(char *key);
+void		free_env_arr(char **arr);
 
 #endif

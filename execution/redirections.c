@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 23:53:50 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:57:33 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 10:32:30 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ int	create_file(t_redirection *rdr)
 void	redirect(t_cmd *cmd)
 {
 	t_redirection	*current;
-	int				fd;
 
 	current = cmd->rdr;
 	while (current != NULL)

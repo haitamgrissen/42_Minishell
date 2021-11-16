@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:57:43 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 00:07:09 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,15 +106,14 @@ void	simple_cmd(t_cmd *cmd)
 void	waiting_sigs(t_pipes *p)
 {
 	while (waitpid(-1, &p->status, 0) > 0)
+		;
+	if (WIFEXITED(p->status))
+		g_exe.exite_err = WEXITSTATUS(p->status);
+	else if (WIFSIGNALED(p->status))
 	{
-		if (WIFEXITED(p->status))
-			g_exe.ret = WEXITSTATUS(p->status);
-		else if (WIFSIGNALED(p->status))
-		{
-			if (WTERMSIG(p->status) == SIGQUIT)
-				ft_putstr_fd("\\Quit: 3", 2);
-			g_exe.ret = WTERMSIG(p->status) + 128;
-		}
+		if (WTERMSIG(p->status) == SIGQUIT)
+			ft_putstr_fd("\\Quit: 3", 2);
+		g_exe.exite_err = WTERMSIG(p->status) + 128;
 	}
 }
 

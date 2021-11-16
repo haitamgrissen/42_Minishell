@@ -3,28 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
+/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 14:44:56 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:23:22 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 11:11:24 by sel-fcht         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char			**ft_malloc_error(char **tab)
-{
-	unsigned int	i;
+// static char		**ft_malloc_error(char **tab)
+// {
+// 	unsigned int	i;
 
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-	free(tab);
-	return (NULL);
-}
+// 	i = 0;
+// 	while (tab[i])
+// 	{
+// 		free(tab[i]);
+// 		i++;
+// 	}
+// 	free(tab);
+// 	return (NULL);
+// }
 
 static unsigned int	ft_get_nb_strs(char const *s, char c)
 {
@@ -107,16 +107,15 @@ char				**ft_split(char const *s, char c)
 	if (!s)
 		return (NULL);
 	nb_strs = ft_get_nb_strs(s, c);
-	if (!(tab = (char **)malloc(sizeof(char *) * (nb_strs + 1))))
-		return (NULL);
+	tab = (char **)malloc(sizeof(char *) * (nb_strs + 1));
 	i = 0;
 	next_str = (char *)s;
 	next_str_len = 0;
 	while (i < nb_strs)
 	{
 		ft_get_next_str(&next_str, &next_str_len, c);
-		if (!(tab[i] = (char *)malloc(sizeof(char) * (next_str_len + 1))))
-			return (ft_malloc_error(tab));
+		tab[i] = (char *)malloc(sizeof(char) * (next_str_len + 1));
+		//	return (ft_malloc_error(tab));
 		ft_strlcpy(tab[i], next_str, next_str_len + 1);
 		i++;
 	}
