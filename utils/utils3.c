@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   utils3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 14:44:26 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 11:15:52 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 16:04:37 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*ft_strnew(size_t size)
+static char	*ft_str_new(size_t size)
 {
 	return ((char *)malloc(sizeof(char) * (size + 1)));
 }

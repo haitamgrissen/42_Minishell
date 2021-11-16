@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:05:18 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:23 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:26:48 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ void	unset(t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		remove_node(&g_exe.envs_list, cmd->args[i]);
+		free_env_arr(g_exe.envs_arr);
+		env_to_arr();
 		i++;
 	}
 }

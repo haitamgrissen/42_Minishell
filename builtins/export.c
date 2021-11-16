@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 10:31:56 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:30:56 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int	update_node(char	*str)
 		return (1);
 	}
 	free(tmp_key);
-	
 	return (0);
 }
 

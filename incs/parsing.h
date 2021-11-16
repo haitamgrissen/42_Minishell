@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 23:24:11 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 22:01:41 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 18:26:07 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ char			*continue_quotes(t_lexer *lexer, char c);
 void			*ft_realloc(void *ptr, size_t newsize);
 
 int				is_operator(char c);
-void			parse(t_lexer *lexer);
+void			parse(void);
 
 t_token			*expand_token(t_lexer *lexer);
 

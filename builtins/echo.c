@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:20:41 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:04 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:36:08 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,25 @@ int	is_rmnl(char *str)
 		return (0);
 }
 
+void	check_print(char *args, int *rm_nl, int *printed)
+{
+	if (*printed == 0)
+	{
+		if (is_rmnl(args))
+			*rm_nl = 1;
+		else
+		{
+			*printed = 1;
+			ft_putstr_fd(args, 1);
+		}
+	}
+	else
+	{
+		ft_putstr_fd(" ", 1);
+		ft_putstr_fd(args, 1);
+	}
+}
+
 void	echo(t_cmd	*cmd)
 {
 	int	rm_nl;
@@ -42,21 +61,7 @@ void	echo(t_cmd	*cmd)
 	i = 1;
 	while (cmd->args[i])
 	{
-		if (printed == 0)
-		{
-			if (is_rmnl(cmd->args[i]))
-				rm_nl = 1;
-			else
-			{
-				printed = 1;
-				ft_putstr_fd(cmd->args[i], 1);
-			}
-		}
-		else
-		{
-			ft_putstr_fd(" ", 1);
-			ft_putstr_fd(cmd->args[i], 1);
-		}
+		check_print(cmd->args[i], &rm_nl, &printed);
 		i++;
 	}
 	if (rm_nl == 0)

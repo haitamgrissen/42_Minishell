@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 13:39:07 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 18:29:52 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,10 +64,10 @@ int	analyze_syntax(t_token **tokens)
 	while (tokens[i])
 	{
 		curr = tokens[i]->type;
-		if (prev != WORD && prev != (t_types)-1 && curr != WORD
+		if (prev != WORD && i != 0 && curr != WORD
 			&& prev != PIPE && curr != PIPE)
 			return (0);
-		if (prev == (t_types)-1 && curr == PIPE)
+		if (i == 0 && curr == PIPE)
 			return (0);
 		prev = curr;
 		i++;
@@ -80,19 +80,20 @@ int	analyze_syntax(t_token **tokens)
 void	syntax_error(int err)
 {
 	if (err == 1)
-		//ft_putstr_fd("BASH: Syntax Error!hihi\n", 2);
-		;
+		ft_putstr_fd("BASH: Syntax Error!\n", 2);
 	if (err == 2)
 		ft_putstr_fd("BASH: Open Quotes!\n", 2);
 	if (err == 3)
 		ft_putstr_fd("BASH: Ambiguous Redirect!\n", 2);
 }
 
-void	parse(t_lexer *lexer)
+void	parse(void)
 {
+	t_lexer	*lexer;
 	t_token	**tokens;
 	int		i;
 
+	lexer = init_lexer(g_exe.line);
 	tokens = malloc(sizeof(struct s_tokens *) * 2);
 	i = 0;
 	tokens[0] = l_next_token(lexer);
@@ -111,4 +112,5 @@ void	parse(t_lexer *lexer)
 	else
 		create_cmds(tokens);
 	free_tokens(tokens);
+	free(lexer);
 }

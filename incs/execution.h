@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 23:54:25 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 17:40:40 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,11 @@ char		*get_working_path(char	*command);
 
 int			execute_pipe(t_cmd *cmd);
 void		execute_cmd(t_cmd *cmd);
+
+void		single_cmd(t_cmd *cmd, t_pipes *p);
+void		simple_cmd(t_cmd *cmd);
+void		for_cmds(t_cmd *cmd, t_pipes *p);
+void		last_cmd(t_cmd *cmd, t_pipes *p);
 
 void		redirect(t_cmd *cmd);
 int			open_herdoc(t_redirection *rdr);

