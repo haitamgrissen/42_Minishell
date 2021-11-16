@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils4.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 14:44:56 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 11:11:24 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 19:41:08 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// static char		**ft_malloc_error(char **tab)
-// {
-// 	unsigned int	i;
-
-// 	i = 0;
-// 	while (tab[i])
-// 	{
-// 		free(tab[i]);
-// 		i++;
-// 	}
-// 	free(tab);
-// 	return (NULL);
-// }
 
 static unsigned int	ft_get_nb_strs(char const *s, char c)
 {
@@ -53,10 +39,10 @@ static unsigned int	ft_get_nb_strs(char const *s, char c)
 	return (nb_strs);
 }
 
-static void			ft_get_next_str(char **next_str, unsigned int *next_str_len,
+static void	ft_get_next_str(char **next_str, unsigned int *next_str_len,
 					char c)
 {
-	unsigned int i;
+	unsigned int	i;
 
 	*next_str += *next_str_len;
 	*next_str_len = 0;
@@ -72,7 +58,7 @@ static void			ft_get_next_str(char **next_str, unsigned int *next_str_len,
 	}
 }
 
-size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dest, const char *src, size_t dstsize)
 {
 	size_t	src_len;
 	size_t	i;
@@ -96,7 +82,7 @@ size_t		ft_strlcpy(char *dest, const char *src, size_t dstsize)
 	return (src_len);
 }
 
-char				**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
 	char			**tab;
 	char			*next_str;
@@ -115,7 +101,6 @@ char				**ft_split(char const *s, char c)
 	{
 		ft_get_next_str(&next_str, &next_str_len, c);
 		tab[i] = (char *)malloc(sizeof(char) * (next_str_len + 1));
-		//	return (ft_malloc_error(tab));
 		ft_strlcpy(tab[i], next_str, next_str_len + 1);
 		i++;
 	}

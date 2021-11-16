@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/13 02:02:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 18:29:52 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 20:26:48 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	check_ambigous_file(t_token **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		if (tokens[i]->type != WORD && tokens[i]->type != PIPE)
+		if (tokens[i]->type != WORD && tokens[i]->type != PIPE
+			&& tokens[i]->type != HERDOC)
 		{
 			if (ft_strchr(tokens[i + 1]->value, ' '))
 				return (1);

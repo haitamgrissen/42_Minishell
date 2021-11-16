@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 18:06:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:07 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:15:46 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	env_len(void)
 		i++;
 		current = current->next;
 	}
-	return (++i);
+	i++;
+	return (i);
 }
 
 char	**env_to_arr(void)
@@ -56,7 +57,9 @@ char	**env_to_arr(void)
 	int		i;
 
 	size = env_len();
-	ret = (char **)malloc(sizeof(char *) * (size + 1));
+	ret = (char **)malloc(sizeof(char *) * (size + 2));
+	if (!ret)
+		return (NULL);
 	i = 0;
 	while (i < size)
 	{

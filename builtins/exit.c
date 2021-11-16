@@ -6,11 +6,17 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:42:08 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 21:58:13 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:38:10 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	exit_statuses(void)
+{
+	ft_putstr_fd(strerror(errno), 2);
+	write(2, "\n", 1);
+}
 
 void	exit_builtin(t_cmd	*cmd)
 {

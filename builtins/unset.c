@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:05:18 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 17:26:48 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 21:24:54 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ void	remove_node(t_envs **head, char	*key)
 			*head = (tmp)->next;
 		}
 		else if (tmp->next == NULL)
-		{
 			tmp->prev->next = NULL;
-		}
 		else
 		{
 			tmp->next->prev = tmp->prev;
@@ -37,7 +35,8 @@ void	remove_node(t_envs **head, char	*key)
 		if (tmp->val != NULL)
 			free(tmp->val);
 		free(tmp);
-		g_exe.envs_list = *head;
+		free_env_arr(g_exe.envs_arr);
+		g_exe.envs_arr = env_to_arr();
 	}
 }
 
@@ -49,8 +48,6 @@ void	unset(t_cmd *cmd)
 	while (cmd->args[i])
 	{
 		remove_node(&g_exe.envs_list, cmd->args[i]);
-		free_env_arr(g_exe.envs_arr);
-		env_to_arr();
 		i++;
 	}
 }

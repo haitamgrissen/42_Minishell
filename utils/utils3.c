@@ -6,69 +6,60 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/12 14:44:26 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 16:04:37 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 19:45:49 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static char	*ft_str_new(size_t size)
+static char	*ft_array(char *x, unsigned int number, long int len)
 {
-	return ((char *)malloc(sizeof(char) * (size + 1)));
+	while (number > 0)
+	{
+		x[len--] = 48 + (number % 10);
+		number = number / 10;
+	}
+	return (x);
 }
 
-static int	ft_numlen(int n, int minus)
+static long int	ft_len(int n)
 {
-	int	numlen;
+	int					len;
 
-	numlen = 1;
-	while (n)
+	len = 0;
+	if (n <= 0)
+		len = 1;
+	while (n != 0)
 	{
-		n /= 10;
-		numlen++;
+		len++;
+		n = n / 10;
 	}
-	return (numlen + minus);
+	return (len);
 }
 
 char	*ft_itoa(int n)
 {
-	char	*str;
-	int		numlen;
-	int		minus;
-	int		digit;
+	char				*x;
+	long int			len;
+	unsigned int		number;
+	int					sign;
 
-	if (n < 0)
-		minus = 1;
-	else
-		minus = 0;
-	numlen = ft_numlen(n, minus);
-	str = ft_str_new(numlen);
-	if (str)
-	{
-		str[numlen--] = '\0';
-		while (numlen >= minus)
-		{
-			digit = n % 10;
-			str[numlen--] = (digit < 0 ? -digit : digit) + '0';
-			n /= 10;
-		}
-		if (minus)
-			str[0] = '-';
-	}
-	return (str);
-}
-
-char	*ft_strchr(const char *str, int c)
-{
-	char	*ptr;
-	char	sym;
-
-	ptr = (char *)str;
-	sym = (char)c;
-	while (*ptr && !(*ptr == sym))
-		ptr++;
-	if (*ptr == sym)
-		return (ptr);
-	else
+	sign = 1;
+	len = ft_len(n);
+	x = (char *)malloc(sizeof(char) * (len + 1));
+	if (!(x))
 		return (NULL);
+	x[len--] = '\0';
+	if (n == 0)
+		x[0] = '0';
+	if (n < 0)
+	{
+		sign *= -1;
+		number = n * -1;
+		x[0] = '-';
+	}
+	else
+		number = n;
+	x = ft_array(x, number, len);
+	return (x);
 }
