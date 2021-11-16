@@ -5,3 +5,10 @@ castit some e_num when compare it to an int 7it kaytel3 error blflags b7al :
            ----> if (prev != WORD && prev != (t_types)-1 && curr != WORD
 		   ---->	&& prev != PIPE && curr != PIPE)
             li kaynin f " int	analyze_syntax(t_token **tokens) "
+
+
+
+
+
+
+test : echo $123HELLO -> should print 23HELLO
