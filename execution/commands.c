@@ -6,11 +6,23 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:37:17 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 18:20:07 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 02:26:36 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	check_exec(char *string)
+{
+	struct stat	buf;
+
+	stat(string, &buf);
+	if (buf.st_mode & S_IFDIR)
+	{
+		dprintf(2, "%s: is directory\n", string);
+		exit(126);
+	}
+}
 
 void	execute_cmd(t_cmd *cmd)
 {
@@ -25,20 +37,24 @@ void	execute_cmd(t_cmd *cmd)
 		str = get_working_path(cmd->cmd);
 		if (str)
 		{
+			check_exec(str);
 			execve(str, cmd->args, g_exe.envs_arr);
-			ft_putstr_fd(strerror(errno), 2);
+			perror(str);
 			write(2, "\n", 1);
-			exit(0);
+			exit(126);
 		}
 		else
 		{
+			if (errno == 13)
+			{
+				perror("");
+				exit (126);
+			}
 			write(2, cmd->cmd, ft_strlen(cmd->cmd));
-			write(2, ": ", 2);
-			write(2, "command not found\n", 18);
-			g_exe.exite_err = 127;
+			ft_putstr_fd(": command not found\n", 2);
 		}
 	}
-	exit(0);
+	exit(127);
 }
 
 void	simple_cmd(t_cmd *cmd)
@@ -59,8 +75,10 @@ void	simple_cmd(t_cmd *cmd)
 void	single_cmd(t_cmd *cmd, t_pipes *p)
 {
 	p->pid = fork();
+	p->last_pid = p->pid;
 	if (p->pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		redirect(cmd);
 		execute_cmd(cmd);
 	}
@@ -76,6 +94,7 @@ void	for_cmds(t_cmd *cmd, t_pipes *p)
 	p->pid = fork();
 	if (p->pid == 0)
 	{
+		signal(SIGQUIT, SIG_DFL);
 		dup2(p->p_out, 1);
 		close(p->pipe_[1]);
 		dup2(p->p_in, 0);
@@ -92,8 +111,11 @@ void	for_cmds(t_cmd *cmd, t_pipes *p)
 void	last_cmd(t_cmd *cmd, t_pipes *p)
 {
 	p->pid = fork();
+	p->last_pid = p->pid;
 	if (p->pid == 0)
 	{
+				signal(SIGQUIT, SIG_DFL);
+
 		if (p->p_in != 0)
 			dup2(p->p_in, 0);
 		if (p->p_in != 0)

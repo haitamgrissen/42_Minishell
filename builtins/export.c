@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/19 14:03:06 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 17:30:56 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 22:30:15 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	add_node(t_envs *head, char	*str)
 	if (!check_key_err(str))
 	{
 		write(2, "not a valid identifier\n", 23);
+		g_exe.exite_err = 1;
 		return ;
 	}
 	current = head;

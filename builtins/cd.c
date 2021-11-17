@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cd.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 13:39:45 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 10:30:49 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 22:33:54 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,11 @@ void	cd(t_cmd *cmd)
 		path = ft_strdup(env->val);
 	}
 	if (chdir(path))
-		printf("%s: Not a directory\n", path);
+	{
+		ft_putstr_fd(path, 2);
+		perror(": ");
+		g_exe.exite_err = 1;
+	}
 	else
 		update_pwds();
 	free(path);

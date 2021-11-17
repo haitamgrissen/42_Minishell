@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 18:06:10 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 02:45:29 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,10 @@ void	close_herdocs(t_cmd *cmd)
 
 void	waiting_sigs(t_pipes *p)
 {
-	while (waitpid(-1, &p->status, 0) > 0)
-		;
+	g_exe.pids_sig = 42;
+	//while (waitpid(-1, &p->status, 0) > 0)
+		//;
+	waitpid(p->last_pid, &p->status, 0);
 	if (WIFEXITED(p->status))
 		g_exe.exite_err = WEXITSTATUS(p->status);
 	else if (WIFSIGNALED(p->status))
@@ -49,6 +51,7 @@ void	waiting_sigs(t_pipes *p)
 			ft_putstr_fd("\\Quit: 3", 2);
 		g_exe.exite_err = WTERMSIG(p->status) + 128;
 	}
+	g_exe.pids_sig = 0;
 }
 
 void	pipe_it(t_cmd *cmd)

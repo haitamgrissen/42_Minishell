@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 23:53:50 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 10:32:30 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/16 23:44:10 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,10 +84,9 @@ void	redirect(t_cmd *cmd)
 			current->fd = create_file(current);
 		if (current->fd == -1)
 		{
-			write(2, "MINI: ", 6);
-			write(2, strerror(errno), ft_strlen(strerror(errno)));
-			write(2, "\n", 1);
-			exit(0);
+			perror("BASH ");
+			g_exe.exite_err = 1;
+			g_exe.ret = 1;
 			return ;
 		}
 		current = current->next;

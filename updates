@@ -21,4 +21,15 @@ log haitam ::
     removed more leaks 
     norminette everything execpt utils:
 
+to FIIIIXX !!!
+./minishell 
 
+
+
+	/*else 
+	{
+		dprintf(2, "%s: No such file or directory", string);
+		exit(127);
+	}
+	//perror("bla bla");
+	//exit(128);*/

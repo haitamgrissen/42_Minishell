@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 00:12:40 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 22:02:51 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 23:38:56 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ void	free_cmd(void)
 void	refresh_bash(void)
 {
 	g_exe.lexer_err = 0;
+	g_exe.ret = 0;
 	if (g_exe.line)
 		free(g_exe.line);
 	free_cmd();

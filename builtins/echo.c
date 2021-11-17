@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 18:20:41 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 17:36:08 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 23:40:13 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	echo(t_cmd	*cmd)
 	int	printed;
 	int	i;
 
+	if (g_exe.ret)
+		return ;
 	rm_nl = 0;
 	printed = 0;
 	i = 1;
@@ -66,4 +68,5 @@ void	echo(t_cmd	*cmd)
 	}
 	if (rm_nl == 0)
 		ft_putstr_fd("\n", 1);
+	g_exe.exite_err = 0;
 }

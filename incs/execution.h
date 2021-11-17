@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 17:40:40 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 02:25:55 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_pipes
 	int		p_in;
 	int		p_out;
 	int		status;
+	int		last_pid;
 }			t_pipes;
 
 # define RDRIN 1
@@ -68,10 +69,11 @@ typedef struct s_exe
 	t_envs			*envs_list;
 	char			**envs_arr;
 	int				pipe_count;
-	int				ret;
 	int				exite_err;
 	int				lexer_err;
 	char			*line;
+	int				pids_sig;
+	int				ret;
 }					t_exe;
 
 t_exe				g_exe;

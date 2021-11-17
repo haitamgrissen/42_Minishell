@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 20:39:02 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/16 20:47:18 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/16 22:41:51 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	main(int ac, char **av, char **env)
 {
+	g_exe.pids_sig = 0;
 	(void)av;
 	init_envs(env);
 	if (ac == 1)

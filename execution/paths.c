@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   paths.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sel-fcht <sel-fcht@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 17:15:40 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/15 23:37:41 by sel-fcht         ###   ########.fr       */
+/*   Updated: 2021/11/17 00:18:07 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ char	*get_working_path(char	*command)
 
 	paths = get_paths();
 	if (!paths)
-		return (NULL);
+		return (command);
 	i = -1;
 	while (paths[++i])
 	{
