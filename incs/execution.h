@@ -6,7 +6,7 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/10 12:46:05 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/17 02:25:55 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 05:26:00 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_pipes
 	int		p_in;
 	int		p_out;
 	int		status;
+	int		laststat;
 	int		last_pid;
 }			t_pipes;
 
@@ -108,5 +109,8 @@ int			open_herdoc(t_redirection *rdr);
 void		herdocs(t_cmd *cmd);
 void		execute_builtin(t_cmd *cmd);
 int			is_builtin(char *str);
+
+void		check_exec(char *string);
+void		exec_ve(t_cmd *cmd);
 
 #endif

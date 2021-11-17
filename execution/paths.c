@@ -6,11 +6,23 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/25 17:15:40 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/17 00:18:07 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 05:22:03 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	check_exec(char *string)
+{
+	struct stat	buf;
+
+	stat(string, &buf);
+	if (buf.st_mode & S_IFDIR)
+	{
+		dprintf(2, "%s: is directory\n", string);
+		exit(126);
+	}
+}
 
 char	**get_paths(void)
 {
@@ -61,6 +73,8 @@ char	*get_working_path(char	*command)
 	paths = get_paths();
 	if (!paths)
 		return (command);
+	if (command[0] == '\0')
+		return (NULL);
 	i = -1;
 	while (paths[++i])
 	{

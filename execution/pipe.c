@@ -6,11 +6,36 @@
 /*   By: hgrissen <hgrissen@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/21 13:40:34 by hgrissen          #+#    #+#             */
-/*   Updated: 2021/11/17 02:45:29 by hgrissen         ###   ########.fr       */
+/*   Updated: 2021/11/17 05:25:24 by hgrissen         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	exec_ve(t_cmd *cmd)
+{
+	char	*str;
+
+	str = get_working_path(cmd->cmd);
+	if (str)
+	{
+		check_exec(str);
+		execve(str, cmd->args, g_exe.envs_arr);
+		perror(str);
+		write(2, "\n", 1);
+		exit(126);
+	}
+	else
+	{
+		if (errno == 13)
+		{
+			perror("");
+			exit(126);
+		}
+		write(2, cmd->cmd, ft_strlen(cmd->cmd));
+		ft_putstr_fd(": command not found\n", 2);
+	}
+}
 
 void	close_herdocs(t_cmd *cmd)
 {
@@ -40,16 +65,16 @@ void	close_herdocs(t_cmd *cmd)
 void	waiting_sigs(t_pipes *p)
 {
 	g_exe.pids_sig = 42;
-	//while (waitpid(-1, &p->status, 0) > 0)
-		//;
-	waitpid(p->last_pid, &p->status, 0);
-	if (WIFEXITED(p->status))
-		g_exe.exite_err = WEXITSTATUS(p->status);
-	else if (WIFSIGNALED(p->status))
+	waitpid(p->last_pid, &p->laststat, 0);
+	while (waitpid(-1, &p->status, 0) > 0)
+		;
+	if (WIFEXITED(p->laststat))
+		g_exe.exite_err = WEXITSTATUS(p->laststat);
+	else if (WIFSIGNALED(p->laststat))
 	{
-		if (WTERMSIG(p->status) == SIGQUIT)
+		if (WTERMSIG(p->laststat) == SIGQUIT)
 			ft_putstr_fd("\\Quit: 3", 2);
-		g_exe.exite_err = WTERMSIG(p->status) + 128;
+		g_exe.exite_err = WTERMSIG(p->laststat) + 128;
 	}
 	g_exe.pids_sig = 0;
 }
